@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
+import SnakeIcon from "./components/snake-icon";
+import { ModeToggle } from "./components/mode-toggle";
 
 function App() {
   const STEP = 20;
@@ -22,6 +24,7 @@ function App() {
   const [position, setPosition] = useState(INITIAL_POSITION);
   const [food, setFood] = useState({ x: 200, y: 200 });
   const [gamePadSize, setGamePadSize] = useState({ width: 0, height: 0 });
+  const [voice, setVoice] = useState(true);
 
   const counterRef = useRef<NodeJS.Timeout | null>(null);
   const gamePadRef = useRef<HTMLDivElement | null>(null);
@@ -51,6 +54,7 @@ function App() {
     };
     updateGamePadSize();
     updateRecord(score);
+    localStorage.setItem("snake-color", "#a21caf");
     window.addEventListener("resize", updateGamePadSize);
     return () => {
       window.removeEventListener("resize", updateGamePadSize);
@@ -77,17 +81,6 @@ function App() {
     }
     return { x, y };
   };
-
-  // const updateRecord = (record: string | number) => {
-  //   if (
-  //     localStorage.getItem("record") &&
-  //     Number(localStorage.getItem("record")) < Number(record)
-  //   ) {
-  //     localStorage.setItem("record", String(record));
-  //   } else {
-  //     localStorage.setItem("record", String(record));
-  //   }
-  // };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -238,18 +231,34 @@ function App() {
     >
       <div
         id="navbar"
-        className="bg-orange-500 row-start-1 row-end-2 col-start-2 col-end-12"
-      ></div>
+        className=" row-start-1 row-end-2 col-start-2 col-end-12 flex items-center justify-between"
+      >
+        <ModeToggle />
+        {voice ? (
+          <i
+            className="fa-solid fa-volume-high cursor-pointer mr-20 sm:mr-0"
+            onClick={() => setVoice(false)}
+          ></i>
+        ) : (
+          <i
+            className="fa-solid fa-volume-xmark cursor-pointer mr-20 sm:mr-0"
+            onClick={() => setVoice(true)}
+          ></i>
+        )}
+        <SnakeIcon className="cursor-pointer" />
+      </div>
       <div
         id="score_board"
-        className="row-start-2 row-end-3 col-start-2 col-end-12 text-base flex justify-between items-center font-black flex-wrap"
+        className="row-start-2 row-end-3 col-start-2 col-end-12 text-sm sm:text-base flex justify-between items-center font-black"
       >
         <div id="soul">
           {[...Array(lives)].map((_, index) => (
             <i key={index} className="fa-solid fa-heart text-red-600"></i>
           ))}
         </div>
-        <div id="score">score : {score}</div>
+        <div id="score" className="sm:ml-20">
+          score : {String(score)}
+        </div>
         <div id="record">
           highest score record :
           {localStorage.getItem("record") ? localStorage.getItem("record") : 0}
@@ -290,80 +299,45 @@ function App() {
           className="bg-zinc-200 hover:bg-zinc-400 col-start-2 col-end-3 row-start-1 row-end-2 flex justify-center items-center cursor-pointer"
           onClick={() => changeDirection("up")}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m15 11.25-3-3m0 0-3 3m3-3v7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
+          <i className="fa-solid fa-circle-up"></i>
         </div>
         <div
           id="arrow_left"
           className="bg-zinc-200 hover:bg-zinc-400 col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center items-center cursor-pointer"
           onClick={() => changeDirection("left")}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
+          <i className="fa-solid fa-circle-left"></i>
         </div>
         <div
           id="arrow_right"
           className="bg-zinc-200 hover:bg-zinc-400 col-start-3 col-end-4 row-start-2 row-end-3 flex justify-center items-center cursor-pointer"
           onClick={() => changeDirection("right")}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
+          <i className="fa-solid fa-circle-right"></i>
         </div>
         <div
           id="arrow_down"
           className="bg-zinc-200 hover:bg-zinc-400 col-start-2 col-end-3 row-start-3 row-end-4 flex justify-center items-center cursor-pointer"
           onClick={() => changeDirection("down")}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m9 12.75 3 3m0 0 3-3m-3 3v-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
+          <i className="fa-solid fa-circle-down"></i>
+        </div>
+        <div
+          id="pauseBtn"
+          className=" col-start-2 col-end-3 row-start-2 row-end-3 flex justify-center items-center"
+          onClick={() => changeDirection("down")}
+        >
+          {move ? (
+            <i
+              className="fa-solid fa-pause cursor-pointer"
+              onClick={() => setMove(false)}
+            ></i>
+          ) : (
+            <i
+              className="fa-solid fa-play cursor-pointer"
+              onClick={() => setMove(true)}
+            ></i>
+          )}
         </div>
       </div>
     </div>
@@ -379,5 +353,16 @@ export default App;
 //       width: Math.floor(gamePadRef.current.clientWidth / STEP) * STEP,
 //       height: Math.floor(gamePadRef.current.clientHeight / STEP) * STEP,
 //     });
+//   }
+// };
+
+// const updateRecord = (record: string | number) => {
+//   if (
+//     localStorage.getItem("record") &&
+//     Number(localStorage.getItem("record")) < Number(record)
+//   ) {
+//     localStorage.setItem("record", String(record));
+//   } else {
+//     localStorage.setItem("record", String(record));
 //   }
 // };
