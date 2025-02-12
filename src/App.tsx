@@ -325,7 +325,6 @@ function App() {
         <div
           id="pauseBtn"
           className=" col-start-2 col-end-3 row-start-2 row-end-3 flex justify-center items-center"
-          onClick={() => changeDirection("down")}
         >
           {move ? (
             <i
