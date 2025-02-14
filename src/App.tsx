@@ -50,6 +50,11 @@ function App() {
     return () => snakeDanceSong.pause();
   }, [voice, move]);
 
+  // useEffect(
+  //   () => setSnakeColor(localStorage.getItem("snak-color")),
+  //   [snakeColor]
+  // );
+
   const updateRecord = (record: string | number) => {
     const storedRecord = localStorage.getItem("record");
     const bestRecord = storedRecord ? Number(storedRecord) : 0;
@@ -70,7 +75,8 @@ function App() {
     };
     updateGamePadSize();
     updateRecord(score);
-    localStorage.setItem("snake-color", "#a21caf");
+    if (!localStorage.getItem("snake-color"))
+      localStorage.setItem("snake-color", "#a21caf");
     window.addEventListener("resize", updateGamePadSize);
     return () => {
       window.removeEventListener("resize", updateGamePadSize);
@@ -293,10 +299,11 @@ function App() {
           <div
             id="snake"
             key={index}
-            className="bg-fuchsia-700 w-[20px] h-[20px] z-20 absolute"
+            className="w-[20px] h-[20px] z-20 absolute"
             style={{
               left: `${pos.x}px`,
               top: `${pos.y}px`,
+              backgroundColor: `${localStorage.getItem("snake-color")}`,
             }}
           ></div>
         ))}
