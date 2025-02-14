@@ -2,6 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import SnakeIcon from "./components/snake-icon";
 import { ModeToggle } from "./components/mode-toggle";
+import SNAKE_DANCE_SONG from "./assets/songs/snake-dance.mp3";
+import EATING_FOOD_SONG from "./assets/songs/crunchy-eating.mp3";
+import LIFE_LOST_SONG from "./assets/songs/life-lost.mp3";
+import GAME_OVER_SONG from "./assets/songs/game-over.mp3";
 
 function App() {
   const STEP = 20;
@@ -15,6 +19,10 @@ function App() {
     { x: 100, y: 160 },
     { x: 80, y: 160 },
   ];
+  const snakeDanceSong: HTMLAudioElement = new Audio(SNAKE_DANCE_SONG);
+  const eatingFoodSong: HTMLAudioElement = new Audio(EATING_FOOD_SONG);
+  const lifeLostSong: HTMLAudioElement = new Audio(LIFE_LOST_SONG);
+  const gameOverSong: HTMLAudioElement = new Audio(GAME_OVER_SONG);
 
   const [move, setMove] = useState(false);
   const [direction, setDirection] = useState("right");
@@ -33,6 +41,14 @@ function App() {
   useEffect(() => {
     positionRef.current = position; // ✅ آپدیت موقعیت مار در هر تغییر state
   }, [position]);
+
+  useEffect(() => {
+    if (move && voice) {
+      snakeDanceSong.play();
+      snakeDanceSong.loop = true;
+    }
+    return () => snakeDanceSong.pause();
+  }, [voice, move]);
 
   const updateRecord = (record: string | number) => {
     const storedRecord = localStorage.getItem("record");
@@ -176,6 +192,7 @@ function App() {
             if (lives > 1) {
               setLives((prevLives) => prevLives - 1);
               setMove(false);
+              if (voice) lifeLostSong.play();
               setTimeout(() => {
                 setPosition(INITIAL_POSITION);
                 setSpeed(INITIAL_SPEED);
@@ -185,6 +202,7 @@ function App() {
             } else {
               setLives(0);
               setMove(false);
+              if (voice) gameOverSong.play();
               updateRecord(score);
               setTimeout(() => {
                 setPosition(INITIAL_POSITION);
@@ -208,11 +226,13 @@ function App() {
           // ✅ تراز کردن مقادیر
           newHead.x = Math.floor(newHead.x / STEP) * STEP;
           newHead.y = Math.floor(newHead.y / STEP) * STEP;
-
+          // بررسی خوردن غذا توسط مار
           if (newHead.x === food.x && newHead.y === food.y) {
             setFood(generateRandomFood());
             setScore((prevScore) => prevScore + 10);
             setSpeed((prevSpeed) => Math.max(50, prevSpeed - SPEED_INCREMENT));
+            // پخش صدای خوردن غذا
+            if (voice) eatingFoodSong.play();
             return [newHead, ...prevPosition];
           }
           return [newHead, ...prevPosition.slice(0, -1)];
