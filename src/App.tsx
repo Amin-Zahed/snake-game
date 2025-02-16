@@ -41,9 +41,9 @@ function App() {
   const [position, setPosition] = useState(INITIAL_POSITION);
   const [food, setFood] = useState({ x: 200, y: 200 });
   const [gamePadSize, setGamePadSize] = useState({ width: 0, height: 0 });
-  const [voice, setVoice] = useState(true);
+  const [sound, setSound] = useState(true);
 
-  const counterRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const gamePadRef = useRef<HTMLDivElement | null>(null);
   const positionRef = useRef(position); // ✅ ذخیره موقعیت آخرین فریم
 
@@ -52,12 +52,12 @@ function App() {
   }, [position]);
 
   useEffect(() => {
-    if (move && voice) {
+    if (move && sound) {
       snakeDanceSong.play();
       snakeDanceSong.loop = true;
     }
     return () => snakeDanceSong.pause();
-  }, [voice, move]);
+  }, [sound, move]);
 
   // useEffect(
   //   () => setSnakeColor(localStorage.getItem("snak-color")),
@@ -97,9 +97,9 @@ function App() {
       return { x: 0, y: 0 };
     const maxX = Math.floor(gamePadSize.width / STEP) * STEP;
     const maxY = Math.floor(gamePadSize.height / STEP) * STEP;
-    let x: any,
-      y: any,
-      isValidPosition = false;
+    let x: any;
+    let y: any;
+    let isValidPosition = false;
     while (!isValidPosition) {
       x = Math.floor(Math.random() * (maxX / STEP)) * STEP;
       y = Math.floor(Math.random() * (maxY / STEP)) * STEP;
@@ -191,7 +191,7 @@ function App() {
 
   useEffect(() => {
     if (move) {
-      counterRef.current = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         setPosition((prevPosition) => {
           let newHead = { ...prevPosition[0] };
           if (direction === "right") newHead.x += STEP;
@@ -207,7 +207,7 @@ function App() {
             if (lives > 1) {
               setLives((prevLives) => prevLives - 1);
               setMove(false);
-              if (voice) lifeLostSong.play();
+              if (sound) lifeLostSong.play();
               setTimeout(() => {
                 setPosition(INITIAL_POSITION);
                 setSpeed(INITIAL_SPEED);
@@ -217,7 +217,7 @@ function App() {
             } else {
               setLives(0);
               setMove(false);
-              if (voice) gameOverSong.play();
+              if (sound) gameOverSong.play();
               updateRecord(score);
               setTimeout(() => {
                 setPosition(INITIAL_POSITION);
@@ -229,7 +229,7 @@ function App() {
                 setMove(false);
               }, 1000);
             }
-            if (counterRef.current) clearInterval(counterRef.current);
+            if (intervalRef.current) clearInterval(intervalRef.current);
             return prevPosition;
           }
 
@@ -247,7 +247,7 @@ function App() {
             setScore((prevScore) => prevScore + 10);
             setSpeed((prevSpeed) => Math.max(50, prevSpeed - SPEED_INCREMENT));
             // پخش صدای خوردن غذا
-            if (voice) eatingFoodSong.play();
+            if (sound) eatingFoodSong.play();
             return [newHead, ...prevPosition];
           }
           return [newHead, ...prevPosition.slice(0, -1)];
@@ -255,7 +255,7 @@ function App() {
       }, speed);
     }
     return () => {
-      if (counterRef.current) clearInterval(counterRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [move, direction, gamePadSize, food, speed, lives]);
 
@@ -308,15 +308,15 @@ function App() {
         className=" row-start-1 row-end-2 col-start-2 col-end-12 flex items-center justify-between"
       >
         <ModeToggle />
-        {voice ? (
+        {sound ? (
           <i
             className="fa-solid fa-volume-high cursor-pointer mr-20 sm:mr-0"
-            onClick={() => setVoice(false)}
+            onClick={() => setSound(false)}
           ></i>
         ) : (
           <i
             className="fa-solid fa-volume-xmark cursor-pointer mr-20 sm:mr-0"
-            onClick={() => setVoice(true)}
+            onClick={() => setSound(true)}
           ></i>
         )}
         <ColorChanger className="cursor-pointer w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]" />
