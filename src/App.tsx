@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
-import SnakeIcon from "./components/snake-icon";
+import ColorChanger from "./components/color-changer";
 import { ModeToggle } from "./components/mode-toggle";
 import SNAKE_DANCE_SONG from "./assets/songs/snake-dance.mp3";
 import EATING_FOOD_SONG from "./assets/songs/crunchy-eating.mp3";
@@ -85,7 +85,7 @@ function App() {
     updateGamePadSize();
     updateRecord(score);
     if (!localStorage.getItem("snake-color"))
-      localStorage.setItem("snake-color", "#a21caf");
+      localStorage.setItem("snake-color", "#16A34A");
     window.addEventListener("resize", updateGamePadSize);
     return () => {
       window.removeEventListener("resize", updateGamePadSize);
@@ -262,7 +262,7 @@ function App() {
   return (
     <div
       id="App"
-      className="bg-zinc-300 w-lvw h-dvh grid grid-cols-12 grid-rows-12 z-10"
+      className="bg-background w-lvw h-dvh grid grid-cols-12 grid-rows-12 z-10"
     >
       <AlertDialog defaultOpen={true}>
         <AlertDialogContent>
@@ -319,7 +319,7 @@ function App() {
             onClick={() => setVoice(true)}
           ></i>
         )}
-        <SnakeIcon className="cursor-pointer" />
+        <ColorChanger className="cursor-pointer w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]" />
       </div>
       <div
         id="score_board"
@@ -341,7 +341,7 @@ function App() {
       <div
         id="gamePad"
         ref={gamePadRef}
-        className="bg-slate-700 row-start-3 row-end-11 col-start-2 col-end-12 relative z-0 overflow-hidden ring-8 ring-black"
+        className=" bg-card row-start-3 row-end-11 col-start-2 col-end-12 relative z-0 overflow-hidden ring-8 ring-zinc-400 dark:ring-zinc-600"
       >
         {position.map((pos, index) => (
           <div
@@ -366,33 +366,33 @@ function App() {
         ></i>
       </div>
       <div
-        id="control_keys"
+        id="control_panel"
         className="row-start-11 row-end-13 col-start-5 col-end-9 grid grid-cols-3 grid-rows-3"
       >
         <div
           id="arrow_up"
-          className="bg-zinc-200 hover:bg-zinc-400 col-start-2 col-end-3 row-start-1 row-end-2 flex justify-center items-center cursor-pointer"
+          className="bg-zinc-200 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-800 col-start-2 col-end-3 row-start-1 row-end-2 flex justify-center items-center cursor-pointer"
           onClick={() => changeDirection("up")}
         >
           <i className="fa-solid fa-circle-up"></i>
         </div>
         <div
           id="arrow_left"
-          className="bg-zinc-200 hover:bg-zinc-400 col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center items-center cursor-pointer"
+          className="bg-zinc-200 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-800 col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center items-center cursor-pointer"
           onClick={() => changeDirection("left")}
         >
           <i className="fa-solid fa-circle-left"></i>
         </div>
         <div
           id="arrow_right"
-          className="bg-zinc-200 hover:bg-zinc-400 col-start-3 col-end-4 row-start-2 row-end-3 flex justify-center items-center cursor-pointer"
+          className="bg-zinc-200 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-800 col-start-3 col-end-4 row-start-2 row-end-3 flex justify-center items-center cursor-pointer"
           onClick={() => changeDirection("right")}
         >
           <i className="fa-solid fa-circle-right"></i>
         </div>
         <div
           id="arrow_down"
-          className="bg-zinc-200 hover:bg-zinc-400 col-start-2 col-end-3 row-start-3 row-end-4 flex justify-center items-center cursor-pointer"
+          className="bg-zinc-200 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-800 col-start-2 col-end-3 row-start-3 row-end-4 flex justify-center items-center cursor-pointer"
           onClick={() => changeDirection("down")}
         >
           <i className="fa-solid fa-circle-down"></i>

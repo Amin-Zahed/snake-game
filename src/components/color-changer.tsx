@@ -1,4 +1,4 @@
-const SnakeIcon = (props: any) => (
+const ColorChanger = (props: any) => (
   <label>
     <input
       type="color"
@@ -44,6 +44,6 @@ const SnakeIcon = (props: any) => (
     </span>
   </label>
 );
-export default SnakeIcon;
+export default ColorChanger;
 
 // stroke="#a21caf"
