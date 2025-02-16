@@ -55,3 +55,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
+
+/*
+  You can use the following keys to contorl the game:
+  - Enter starts the game
+  - Space stops the game
+  - Arrow keys change the snake's direction
+
+  <strong>Notes:</strong> 
+  - screen touch users can use swapping to change the snake's direction
+  - there is a control panel provided on the bottom of the page to contole the game
+                      ENTER
+*/

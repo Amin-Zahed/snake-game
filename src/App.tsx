@@ -6,6 +6,15 @@ import SNAKE_DANCE_SONG from "./assets/songs/snake-dance.mp3";
 import EATING_FOOD_SONG from "./assets/songs/crunchy-eating.mp3";
 import LIFE_LOST_SONG from "./assets/songs/life-lost.mp3";
 import GAME_OVER_SONG from "./assets/songs/game-over.mp3";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 function App() {
   const STEP = 20;
@@ -255,6 +264,45 @@ function App() {
       id="App"
       className="bg-zinc-300 w-lvw h-dvh grid grid-cols-12 grid-rows-12 z-10"
     >
+      <AlertDialog defaultOpen={true}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>How to play the game :</AlertDialogTitle>
+            <AlertDialogDescription>
+              You can use the following keys to contorl the game: <br />- press{" "}
+              <kbd className="bg-slate-200 rounded-[3px] border border-solid border-gray-500 shadow-inner inline-block font-bold leading-none py-[2px] px-1 whitespace-nowrap">
+                Enter
+              </kbd>{" "}
+              to starts the game <br />- press{" "}
+              <kbd className="bg-slate-200 rounded-[3px] border border-solid border-gray-500 shadow-inner inline-block font-bold leading-none py-[2px] px-1 whitespace-nowrap">
+                Space
+              </kbd>{" "}
+              to stops the game <br />- press{" "}
+              <kbd className="bg-slate-200 rounded-[3px] border border-solid border-gray-500 shadow-inner inline-block font-bold leading-none py-[2px] px-1 whitespace-nowrap">
+                <i className="fa-solid fa-arrow-left"></i>
+              </kbd>{" "}
+              <kbd className="bg-slate-200 rounded-[3px] border border-solid border-gray-500 shadow-inner inline-block font-bold leading-none py-[2px] px-1 whitespace-nowrap">
+                <i className="fa-solid fa-arrow-up"></i>
+              </kbd>{" "}
+              <kbd className="bg-slate-200 rounded-[3px] border border-solid border-gray-500 shadow-inner inline-block font-bold leading-none py-[2px] px-1 whitespace-nowrap">
+                <i className="fa-solid fa-arrow-right"></i>
+              </kbd>{" "}
+              <kbd className="bg-slate-200 rounded-[3px] border border-solid border-gray-500 shadow-inner inline-block font-bold leading-none py-[2px] px-1 whitespace-nowrap">
+                <i className="fa-solid fa-arrow-down"></i>
+              </kbd>{" "}
+              to change the snake's direction <br />
+              <strong>Notes:</strong>
+              <br />- screen touch users can use swapping to change the snake's
+              direction <br />- there is a control panel provided on the bottom
+              of the page to control the snake
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction>Start game</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div
         id="navbar"
         className=" row-start-1 row-end-2 col-start-2 col-end-12 flex items-center justify-between"
