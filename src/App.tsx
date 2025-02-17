@@ -33,6 +33,7 @@ function App() {
   const lifeLostSong: HTMLAudioElement = new Audio(LIFE_LOST_SONG);
   const gameOverSong: HTMLAudioElement = new Audio(GAME_OVER_SONG);
 
+  const [start, setStart] = useState(false);
   const [move, setMove] = useState(false);
   const [direction, setDirection] = useState("right");
   const [speed, setSpeed] = useState(INITIAL_SPEED);
@@ -127,7 +128,7 @@ function App() {
       ) {
         e.preventDefault(); // ✅ فقط برای کلیدهای مورد استفاده اعمال می‌شود
       }
-      if (!move && e.code === "Enter") {
+      if (start && !move && e.code === "Enter") {
         setMove(true);
       } else {
         switch (e.code) {
@@ -153,7 +154,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [move, direction]);
+  }, [start, move, direction]);
 
   const changeDirection = (newDirection: string) => {
     if (move) {
@@ -298,7 +299,9 @@ function App() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction>Start game</AlertDialogAction>
+            <AlertDialogAction onClick={() => setStart(true)}>
+              Start game
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
