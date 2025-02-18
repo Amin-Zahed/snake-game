@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import "./App.css";
 import ColorChanger from "./components/color-changer";
 import { ModeToggle } from "./components/mode-toggle";
@@ -48,30 +48,32 @@ function App() {
   const gamePadRef = useRef<HTMLDivElement | null>(null);
   const positionRef = useRef(position); // ✅ ذخیره موقعیت آخرین فریم
 
-  const updateRecord = (record: string | number) => {
+  const updateRecord = useCallback((record: string | number) => {
     const storedRecord = localStorage.getItem("record");
     const bestRecord = storedRecord ? Number(storedRecord) : 0;
-
     if (Number(record) > bestRecord) {
       localStorage.setItem("record", String(record));
     }
-  };
+  }, []);
 
-  const changeDirection = (newDirection: string) => {
-    if (move) {
-      if (
-        (newDirection === "up" && direction !== "down") ||
-        (newDirection === "down" && direction !== "up") ||
-        (newDirection === "left" && direction !== "right") ||
-        (newDirection === "right" && direction !== "left")
-      ) {
-        setDirection(newDirection);
+  const changeDirection = useCallback(
+    (newDirection: string) => {
+      if (move) {
+        if (
+          (newDirection === "up" && direction !== "down") ||
+          (newDirection === "down" && direction !== "up") ||
+          (newDirection === "left" && direction !== "right") ||
+          (newDirection === "right" && direction !== "left")
+        ) {
+          setDirection(newDirection);
+        }
       }
-    }
-  };
+    },
+    [move, direction]
+  );
 
   /** بررسی یکنواخت بودن جهت حرکت مار */
-  const isUniformDirection = () => {
+  const isUniformDirection = useCallback(() => {
     const dx = position[1].x - position[0].x;
     const dy = position[1].y - position[0].y;
     return position.every((segment, index) => {
@@ -81,17 +83,20 @@ function App() {
         segment.x - prevSegment.x === dx && segment.y - prevSegment.y === dy
       );
     });
-  };
+  }, [position]);
 
   /** بررسی برخورد سر مار با بدن، با در نظر گرفتن یکنواختی حرکت */
-  const isCollidingWithBody = (head: { x: number; y: number }) => {
-    if (isUniformDirection()) return false; // اگر مار کاملاً یکنواخت حرکت می‌کند، برخورد در نظر گرفته نمی‌شود
-    return positionRef.current
-      .slice(1)
-      .some((segment) => segment.x === head.x && segment.y === head.y);
-  };
+  const isCollidingWithBody = useCallback(
+    (head: { x: number; y: number }) => {
+      if (isUniformDirection()) return false; // اگر مار کاملاً یکنواخت حرکت می‌کند، برخورد در نظر گرفته نمی‌شود
+      return positionRef.current
+        .slice(1)
+        .some((segment) => segment.x === head.x && segment.y === head.y);
+    },
+    [positionRef.current]
+  );
 
-  const generateRandomFood = () => {
+  const generateRandomFood = useCallback(() => {
     if (gamePadSize.width === 0 || gamePadSize.height === 0)
       return { x: 0, y: 0 };
     const maxX = Math.floor(gamePadSize.width / STEP) * STEP;
@@ -110,7 +115,7 @@ function App() {
         !(x === food.x && y === food.y);
     }
     return { x, y };
-  };
+  }, [gamePadSize, position]);
 
   useEffect(() => {
     const updateGamePadSize = () => {
@@ -194,11 +199,9 @@ function App() {
           if (direction === "left") newHead.x -= STEP;
           if (direction === "down") newHead.y += STEP;
           if (direction === "up") newHead.y -= STEP;
-
           // ✅ جلوگیری از مشکلات ناهم‌ترازی
           newHead.x = Math.round(newHead.x / STEP) * STEP;
           newHead.y = Math.round(newHead.y / STEP) * STEP;
-
           if (isCollidingWithBody(newHead)) {
             if (lives > 1) {
               setLives((prevLives) => prevLives - 1);
@@ -228,7 +231,6 @@ function App() {
             if (intervalRef.current) clearInterval(intervalRef.current);
             return prevPosition;
           }
-
           // ✅ اصلاح ورود از مرز برای جلوگیری از برخورد اشتباه
           if (newHead.x >= gamePadSize.width) newHead.x = 0;
           if (newHead.x < 0) newHead.x = gamePadSize.width - STEP;
