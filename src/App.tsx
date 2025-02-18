@@ -48,23 +48,6 @@ function App() {
   const gamePadRef = useRef<HTMLDivElement | null>(null);
   const positionRef = useRef(position); // ✅ ذخیره موقعیت آخرین فریم
 
-  useEffect(() => {
-    positionRef.current = position; // ✅ آپدیت موقعیت مار در هر تغییر state
-  }, [position]);
-
-  useEffect(() => {
-    if (move && sound) {
-      snakeDanceSong.play();
-      snakeDanceSong.loop = true;
-    }
-    return () => snakeDanceSong.pause();
-  }, [sound, move]);
-
-  // useEffect(
-  //   () => setSnakeColor(localStorage.getItem("snak-color")),
-  //   [snakeColor]
-  // );
-
   const updateRecord = (record: string | number) => {
     const storedRecord = localStorage.getItem("record");
     const bestRecord = storedRecord ? Number(storedRecord) : 0;
@@ -74,24 +57,39 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const updateGamePadSize = () => {
-      if (gamePadRef.current) {
-        setGamePadSize({
-          width: gamePadRef.current.clientWidth,
-          height: gamePadRef.current.clientHeight,
-        });
+  const changeDirection = (newDirection: string) => {
+    if (move) {
+      if (
+        (newDirection === "up" && direction !== "down") ||
+        (newDirection === "down" && direction !== "up") ||
+        (newDirection === "left" && direction !== "right") ||
+        (newDirection === "right" && direction !== "left")
+      ) {
+        setDirection(newDirection);
       }
-    };
-    updateGamePadSize();
-    updateRecord(score);
-    if (!localStorage.getItem("snake-color"))
-      localStorage.setItem("snake-color", "#16A34A");
-    window.addEventListener("resize", updateGamePadSize);
-    return () => {
-      window.removeEventListener("resize", updateGamePadSize);
-    };
-  }, []);
+    }
+  };
+
+  /** بررسی یکنواخت بودن جهت حرکت مار */
+  const isUniformDirection = () => {
+    const dx = position[1].x - position[0].x;
+    const dy = position[1].y - position[0].y;
+    return position.every((segment, index) => {
+      if (index === 0) return true; // سر مار نیازی به بررسی ندارد
+      const prevSegment = position[index - 1];
+      return (
+        segment.x - prevSegment.x === dx && segment.y - prevSegment.y === dy
+      );
+    });
+  };
+
+  /** بررسی برخورد سر مار با بدن، با در نظر گرفتن یکنواختی حرکت */
+  const isCollidingWithBody = (head: { x: number; y: number }) => {
+    if (isUniformDirection()) return false; // اگر مار کاملاً یکنواخت حرکت می‌کند، برخورد در نظر گرفته نمی‌شود
+    return positionRef.current
+      .slice(1)
+      .some((segment) => segment.x === head.x && segment.y === head.y);
+  };
 
   const generateRandomFood = () => {
     if (gamePadSize.width === 0 || gamePadSize.height === 0)
@@ -113,6 +111,37 @@ function App() {
     }
     return { x, y };
   };
+
+  useEffect(() => {
+    const updateGamePadSize = () => {
+      if (gamePadRef.current) {
+        setGamePadSize({
+          width: gamePadRef.current.clientWidth,
+          height: gamePadRef.current.clientHeight,
+        });
+      }
+    };
+    updateGamePadSize();
+    updateRecord(score);
+    if (!localStorage.getItem("snake-color"))
+      localStorage.setItem("snake-color", "#16A34A");
+    window.addEventListener("resize", updateGamePadSize);
+    return () => {
+      window.removeEventListener("resize", updateGamePadSize);
+    };
+  }, []);
+
+  useEffect(() => {
+    positionRef.current = position; // ✅ آپدیت موقعیت مار در هر تغییر state
+  }, [position]);
+
+  useEffect(() => {
+    if (move && sound) {
+      snakeDanceSong.play();
+      snakeDanceSong.loop = true;
+    }
+    return () => snakeDanceSong.pause();
+  }, [sound, move]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -155,40 +184,6 @@ function App() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [start, move, direction]);
-
-  const changeDirection = (newDirection: string) => {
-    if (move) {
-      if (
-        (newDirection === "up" && direction !== "down") ||
-        (newDirection === "down" && direction !== "up") ||
-        (newDirection === "left" && direction !== "right") ||
-        (newDirection === "right" && direction !== "left")
-      ) {
-        setDirection(newDirection);
-      }
-    }
-  };
-
-  /** بررسی یکنواخت بودن جهت حرکت مار */
-  const isUniformDirection = () => {
-    const dx = position[1].x - position[0].x;
-    const dy = position[1].y - position[0].y;
-    return position.every((segment, index) => {
-      if (index === 0) return true; // سر مار نیازی به بررسی ندارد
-      const prevSegment = position[index - 1];
-      return (
-        segment.x - prevSegment.x === dx && segment.y - prevSegment.y === dy
-      );
-    });
-  };
-
-  /** بررسی برخورد سر مار با بدن، با در نظر گرفتن یکنواختی حرکت */
-  const isCollidingWithBody = (head: { x: number; y: number }) => {
-    if (isUniformDirection()) return false; // اگر مار کاملاً یکنواخت حرکت می‌کند، برخورد در نظر گرفته نمی‌شود
-    return positionRef.current
-      .slice(1)
-      .some((segment) => segment.x === head.x && segment.y === head.y);
-  };
 
   useEffect(() => {
     if (move) {
@@ -443,3 +438,8 @@ export default App;
 //     localStorage.setItem("record", String(record));
 //   }
 // };
+
+// useEffect(
+//   () => setSnakeColor(localStorage.getItem("snak-color")),
+//   [snakeColor]
+// );
