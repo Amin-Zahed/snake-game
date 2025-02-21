@@ -17,7 +17,7 @@ A classic Snake game built with **React**, **TypeScript**, **shadcnUI**, and **T
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-  @media (max-width: 600px) {
+  @media (max-width: 480px) {
     .screenshot-grid {
       grid-template-columns: 1fr;
     }
