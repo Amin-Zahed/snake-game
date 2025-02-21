@@ -11,25 +11,10 @@ A classic Snake game built with **React**, **TypeScript**, **shadcnUI**, and **T
 
 ## 📸 Preview
 
-<style>
-  .screenshot-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  @media (max-width: 480px) {
-    .screenshot-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<div class="screenshot-grid">
-  <img src="./src/assets/screenshots/Screenshot-1.png" alt="Snake Game Preview 1" style="width: 100%;">
-  <img src="./src/assets/screenshots/Screenshot-2.png" alt="Snake Game Preview 2" style="width: 100%;">
-  <img src="./src/assets/screenshots/Screenshot-3.png" alt="Snake Game Preview 3" style="width: 100%;">
-  <img src="./src/assets/screenshots/Screenshot-4.png" alt="Snake Game Preview 4" style="width: 100%;">
-</div>
+![screen shot 1](./src/assets/screenshots/Screenshot-1.png)
+![screen shot 2](./src/assets/screenshots/Screenshot-2.png)
+![screen shot 3](./src/assets/screenshots/Screenshot-3.png)
+![screen shot 4](./src/assets/screenshots/Screenshot-4.png)
 
 ## 🛠️ Installation & Running Locally
 
