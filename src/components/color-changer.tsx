@@ -1,4 +1,4 @@
-const ColorChanger = (props: any) => (
+const ColorChanger = (props: React.SVGProps<SVGSVGElement>) => (
   <label>
     <input
       type="color"
@@ -12,7 +12,7 @@ const ColorChanger = (props: any) => (
     />
     <span>
       <svg
-        fill={localStorage.getItem("snake-color")}
+        fill={localStorage.getItem("snake-color") ?? undefined}
         id="Capa_1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -20,7 +20,7 @@ const ColorChanger = (props: any) => (
         height="100px"
         viewBox="-56.91 -56.91 682.89 682.89"
         xmlSpace="preserve"
-        stroke={localStorage.getItem("snake-color")}
+        stroke={localStorage.getItem("snake-color") ?? undefined}
         strokeWidth={0.00569074}
         transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"
         {...props}

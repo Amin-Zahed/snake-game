@@ -101,8 +101,8 @@ function App() {
       return { x: 0, y: 0 };
     const maxX = Math.floor(gamePadSize.width / STEP) * STEP;
     const maxY = Math.floor(gamePadSize.height / STEP) * STEP;
-    let x: any;
-    let y: any;
+    let x: number = 0;
+    let y: number = 0;
     let isValidPosition = false;
     while (!isValidPosition) {
       x = Math.floor(Math.random() * (maxX / STEP)) * STEP;
