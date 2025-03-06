@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import "./App.css";
 import ColorChanger from "./components/color-changer";
 import { ModeToggle } from "./components/mode-toggle";
+import useZustand from "./store/store.tsx";
 import SNAKE_DANCE_SONG from "./assets/songs/snake-dance.mp3";
 import EATING_FOOD_SONG from "./assets/songs/crunchy-eating.mp3";
 import LIFE_LOST_SONG from "./assets/songs/life-lost.mp3";
@@ -18,31 +19,39 @@ import {
 
 function App() {
   const STEP = 20;
-  const INITIAL_SPEED = 150;
-  const SPEED_INCREMENT = 10;
-  const INITIAL_LIVES = 3;
-  const INITIAL_POSITION = [
-    { x: 160, y: 160 },
-    { x: 140, y: 160 },
-    { x: 120, y: 160 },
-    { x: 100, y: 160 },
-    { x: 80, y: 160 },
-  ];
+  const {
+    start,
+    move,
+    direction,
+    speed,
+    score,
+    lives,
+    position,
+    food,
+    gamePadSize,
+    sound,
+    setStartTrue,
+    setMoveTrue,
+    setMoveFalse,
+    setSoundTrue,
+    setSoundFalse,
+    setDirection,
+    setSpeedIncrement,
+    setDefaultSpeed,
+    setScoreIncrement,
+    setDefaultScore,
+    setLivesDecrement,
+    setDefaultLives,
+    setChangePosition,
+    setDefaultPosition,
+    setChangeFood,
+    setGamePadSize,
+  } = useZustand();
+
   const snakeDanceSong: HTMLAudioElement = new Audio(SNAKE_DANCE_SONG);
   const eatingFoodSong: HTMLAudioElement = new Audio(EATING_FOOD_SONG);
   const lifeLostSong: HTMLAudioElement = new Audio(LIFE_LOST_SONG);
   const gameOverSong: HTMLAudioElement = new Audio(GAME_OVER_SONG);
-
-  const [start, setStart] = useState(false);
-  const [move, setMove] = useState(false);
-  const [direction, setDirection] = useState("right");
-  const [speed, setSpeed] = useState(INITIAL_SPEED);
-  const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(INITIAL_LIVES);
-  const [position, setPosition] = useState(INITIAL_POSITION);
-  const [food, setFood] = useState({ x: 200, y: 200 });
-  const [gamePadSize, setGamePadSize] = useState({ width: 0, height: 0 });
-  const [sound, setSound] = useState(true);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const gamePadRef = useRef<HTMLDivElement | null>(null);
@@ -76,7 +85,7 @@ function App() {
   const isUniformDirection = useCallback(() => {
     const dx = position[1].x - position[0].x;
     const dy = position[1].y - position[0].y;
-    return position.every((segment, index) => {
+    return position.every((segment: any, index: any) => {
       if (index === 0) return true; // سر مار نیازی به بررسی ندارد
       const prevSegment = position[index - 1];
       return (
@@ -91,7 +100,7 @@ function App() {
       if (isUniformDirection()) return false; // اگر مار کاملاً یکنواخت حرکت می‌کند، برخورد در نظر گرفته نمی‌شود
       return positionRef.current
         .slice(1)
-        .some((segment) => segment.x === head.x && segment.y === head.y);
+        .some((segment: any) => segment.x === head.x && segment.y === head.y);
     },
     [positionRef.current]
   );
@@ -111,7 +120,7 @@ function App() {
       x = Math.floor(x / STEP) * STEP;
       y = Math.floor(y / STEP) * STEP;
       isValidPosition =
-        !position.some((pos) => pos.x === x && pos.y === y) &&
+        !position.some((pos: any) => pos.x === x && pos.y === y) &&
         !(x === food.x && y === food.y);
     }
     return { x, y };
@@ -163,11 +172,11 @@ function App() {
         e.preventDefault(); // ✅ فقط برای کلیدهای مورد استفاده اعمال می‌شود
       }
       if (start && !move && e.code === "Enter") {
-        setMove(true);
+        setMoveTrue();
       } else {
         switch (e.code) {
           case "Space":
-            if (move) setMove(false);
+            if (move) setMoveFalse();
             break;
           case "ArrowUp":
             if (move && direction !== "down") setDirection("up");
@@ -193,7 +202,7 @@ function App() {
   useEffect(() => {
     if (move) {
       intervalRef.current = setInterval(() => {
-        setPosition((prevPosition) => {
+        setChangePosition((prevPosition) => {
           let newHead = { ...prevPosition[0] };
           if (direction === "right") newHead.x += STEP;
           if (direction === "left") newHead.x -= STEP;
@@ -204,28 +213,28 @@ function App() {
           newHead.y = Math.round(newHead.y / STEP) * STEP;
           if (isCollidingWithBody(newHead)) {
             if (lives > 1) {
-              setLives((prevLives) => prevLives - 1);
-              setMove(false);
+              setLivesDecrement();
+              setMoveFalse();
               if (sound) lifeLostSong.play();
               setTimeout(() => {
-                setPosition(INITIAL_POSITION);
-                setSpeed(INITIAL_SPEED);
+                setDefaultPosition();
+                setDefaultSpeed();
                 setDirection("right");
-                setMove(true);
+                setMoveTrue();
               }, 1000);
             } else {
-              setLives(0);
-              setMove(false);
+              setDefaultLives();
+              setMoveFalse();
               if (sound) gameOverSong.play();
               updateRecord(score);
               setTimeout(() => {
-                setPosition(INITIAL_POSITION);
-                setSpeed(INITIAL_SPEED);
-                setScore(0);
-                setLives(INITIAL_LIVES);
+                setDefaultPosition();
+                setDefaultSpeed();
+                setDefaultScore();
+                setDefaultLives();
                 setDirection("right");
-                setFood({ x: 200, y: 200 });
-                setMove(false);
+                setChangeFood({ x: 200, y: 200 });
+                setMoveFalse();
               }, 1000);
             }
             if (intervalRef.current) clearInterval(intervalRef.current);
@@ -241,9 +250,9 @@ function App() {
           newHead.y = Math.floor(newHead.y / STEP) * STEP;
           // بررسی خوردن غذا توسط مار
           if (newHead.x === food.x && newHead.y === food.y) {
-            setFood(generateRandomFood());
-            setScore((prevScore) => prevScore + 10);
-            setSpeed((prevSpeed) => Math.max(50, prevSpeed - SPEED_INCREMENT));
+            setChangeFood(generateRandomFood());
+            setScoreIncrement();
+            setSpeedIncrement();
             // پخش صدای خوردن غذا
             if (sound) eatingFoodSong.play();
             return [newHead, ...prevPosition];
@@ -296,7 +305,7 @@ function App() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => setStart(true)}>
+            <AlertDialogAction onClick={() => setStartTrue()}>
               Start game
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -311,12 +320,12 @@ function App() {
         {sound ? (
           <i
             className="fa-solid fa-volume-high cursor-pointer mr-20 sm:mr-0"
-            onClick={() => setSound(false)}
+            onClick={() => setSoundFalse()}
           ></i>
         ) : (
           <i
             className="fa-solid fa-volume-xmark cursor-pointer mr-20 sm:mr-0"
-            onClick={() => setSound(true)}
+            onClick={() => setSoundTrue()}
           ></i>
         )}
         <ColorChanger className="cursor-pointer w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]" />
@@ -343,7 +352,7 @@ function App() {
         ref={gamePadRef}
         className=" bg-card row-start-3 row-end-11 col-start-2 col-end-12 relative z-0 overflow-hidden ring-8 ring-zinc-400 dark:ring-zinc-600"
       >
-        {position.map((pos, index) => (
+        {position.map((pos: any, index: any) => (
           <div
             id="snake"
             key={index}
@@ -404,12 +413,12 @@ function App() {
           {move ? (
             <i
               className="fa-solid fa-pause cursor-pointer"
-              onClick={() => setMove(false)}
+              onClick={() => setMoveFalse()}
             ></i>
           ) : (
             <i
               className="fa-solid fa-play cursor-pointer"
-              onClick={() => setMove(true)}
+              onClick={() => setMoveTrue()}
             ></i>
           )}
         </div>
