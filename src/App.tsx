@@ -30,6 +30,7 @@ function App() {
     food,
     gamePadSize,
     sound,
+    snakeColor,
     setStartTrue,
     setMoveTrue,
     setMoveFalse,
@@ -138,7 +139,7 @@ function App() {
     updateGamePadSize();
     updateRecord(score);
     if (!localStorage.getItem("snake-color"))
-      localStorage.setItem("snake-color", "#16A34A");
+      localStorage.setItem("snake-color", snakeColor);
     window.addEventListener("resize", updateGamePadSize);
     return () => {
       window.removeEventListener("resize", updateGamePadSize);
@@ -360,7 +361,7 @@ function App() {
             style={{
               left: `${pos.x}px`,
               top: `${pos.y}px`,
-              backgroundColor: `${localStorage.getItem("snake-color")}`,
+              backgroundColor: `${snakeColor}`,
             }}
           ></div>
         ))}
