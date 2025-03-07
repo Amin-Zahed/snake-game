@@ -14,11 +14,13 @@ interface GameState {
   INITIAL_SPEED: number;
   SPEED_INCREMENT: number;
   INITIAL_LIVES: number;
+  INITIAL_SNAKE_COLOR: string;
   INITIAL_POSITION: Position[];
   INITIAL_FOOD: Position;
   start: boolean;
   move: boolean;
   sound: boolean;
+  snakeColor: string;
   direction: "up" | "down" | "left" | "right";
   score: number;
   speed: number;
@@ -26,7 +28,6 @@ interface GameState {
   position: Position[];
   food: Position;
   gamePadSize: GamePadSize;
-  count: number;
   setStartTrue: () => void;
   setMoveTrue: () => void;
   setMoveFalse: () => void;
@@ -45,11 +46,14 @@ interface GameState {
   setDefaultPosition: () => void;
   setChangeFood: (newFood: Position) => void;
   setGamePadSize: (newGamePadSize: GamePadSize) => void;
+  setSnakeColor: (newSnakeColor: string) => void;
+  setDefaultSnakeColor: () => void;
 }
 
 const INITIAL_SPEED = 150;
 const SPEED_INCREMENT = 10;
 const INITIAL_LIVES = 3;
+const INITIAL_SNAKE_COLOR = "#16A34A";
 const INITIAL_POSITION: Position[] = [
   { x: 160, y: 160 },
   { x: 140, y: 160 },
@@ -64,6 +68,7 @@ const useZustand = create<GameState>((set) => ({
   INITIAL_SPEED,
   SPEED_INCREMENT,
   INITIAL_LIVES,
+  INITIAL_SNAKE_COLOR,
   INITIAL_POSITION,
   INITIAL_FOOD,
 
@@ -72,12 +77,12 @@ const useZustand = create<GameState>((set) => ({
   sound: true,
   direction: "right",
   score: 0,
+  snakeColor: INITIAL_SNAKE_COLOR,
   speed: INITIAL_SPEED,
   lives: INITIAL_LIVES,
   position: [...INITIAL_POSITION],
   food: { ...INITIAL_FOOD },
   gamePadSize: { ...INITIAL_GAMEPAD_SIZE },
-  count: 1,
 
   setStartTrue: () => set({ start: true }),
   setMoveTrue: () => set({ move: true }),
@@ -115,6 +120,9 @@ const useZustand = create<GameState>((set) => ({
 
   setGamePadSize: (newGamePadSize: GamePadSize) =>
     set({ gamePadSize: { ...newGamePadSize } }),
+
+  setSnakeColor: (newSnakeColor) => set({ snakeColor: newSnakeColor }),
+  setDefaultSnakeColor: () => set({ snakeColor: INITIAL_SNAKE_COLOR }),
 }));
 
 export default useZustand;
