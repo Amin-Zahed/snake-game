@@ -36,8 +36,8 @@ function App() {
     setMove,
     setSound,
     setDirection,
-    setSpeedIncrement,
-    setDefaultSpeed,
+    speedIncrement,
+    defaultSpeed,
     setScoreIncrement,
     setDefaultScore,
     setLivesDecrement,
@@ -218,7 +218,7 @@ function App() {
               if (sound) lifeLostSong.play();
               setTimeout(() => {
                 setDefaultPosition();
-                setDefaultSpeed();
+                defaultSpeed();
                 setDirection("right");
                 setMove(true);
               }, 1000);
@@ -229,7 +229,7 @@ function App() {
               updateRecord(score);
               setTimeout(() => {
                 setDefaultPosition();
-                setDefaultSpeed();
+                defaultSpeed();
                 setDefaultScore();
                 setDefaultLives();
                 setDirection("right");
@@ -252,7 +252,7 @@ function App() {
           if (newHead.x === food.x && newHead.y === food.y) {
             setChangeFood(generateRandomFood());
             setScoreIncrement();
-            setSpeedIncrement();
+            speedIncrement();
             // پخش صدای خوردن غذا
             if (sound) eatingFoodSong.play();
             return [newHead, ...prevPosition];
