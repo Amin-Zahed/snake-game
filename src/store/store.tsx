@@ -11,6 +11,7 @@ interface GamePadSize {
 }
 
 interface GameState {
+  STEP: number;
   INITIAL_SPEED: number;
   SPEED_INCREMENT: number;
   INITIAL_LIVES: number;
@@ -53,6 +54,7 @@ interface GameState {
   // setDefaultSnakeColor: () => void;
 }
 
+const STEP = 20;
 const INITIAL_SPEED = 150;
 const SPEED_INCREMENT = 10;
 const INITIAL_LIVES = 3;
@@ -80,6 +82,7 @@ const useZustand = create<GameState>((set) => ({
   MAX_SPEED,
   INITIAL_SCORE,
   SCORE_INCREMENT,
+  STEP,
 
   start: false,
   move: false,

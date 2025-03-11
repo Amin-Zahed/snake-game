@@ -18,8 +18,9 @@ import {
 } from "@/components/ui/alert-dialog";
 
 function App() {
-  const STEP = 20;
   const {
+    STEP,
+    INITIAL_SCORE,
     start,
     move,
     direction,
@@ -60,7 +61,7 @@ function App() {
 
   const updateRecord = useCallback((record: string | number) => {
     const storedRecord = localStorage.getItem("record");
-    const bestRecord = storedRecord ? Number(storedRecord) : 0;
+    const bestRecord = storedRecord ? Number(storedRecord) : INITIAL_SCORE;
     if (Number(record) > bestRecord) {
       localStorage.setItem("record", String(record));
     }
@@ -345,7 +346,9 @@ function App() {
         </div>
         <div id="record">
           highest score record :
-          {localStorage.getItem("record") ? localStorage.getItem("record") : 0}
+          {localStorage.getItem("record")
+            ? localStorage.getItem("record")
+            : INITIAL_SCORE}
         </div>
       </div>
       <div
