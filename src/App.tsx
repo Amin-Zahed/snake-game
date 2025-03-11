@@ -38,8 +38,8 @@ function App() {
     setDirection,
     speedIncrement,
     defaultSpeed,
-    setScoreIncrement,
-    setDefaultScore,
+    scoreIncrement,
+    defaultScore,
     setLivesDecrement,
     setDefaultLives,
     setChangePosition,
@@ -230,7 +230,7 @@ function App() {
               setTimeout(() => {
                 setDefaultPosition();
                 defaultSpeed();
-                setDefaultScore();
+                defaultScore();
                 setDefaultLives();
                 setDirection("right");
                 setChangeFood({ x: 200, y: 200 });
@@ -251,7 +251,7 @@ function App() {
           // بررسی خوردن غذا توسط مار
           if (newHead.x === food.x && newHead.y === food.y) {
             setChangeFood(generateRandomFood());
-            setScoreIncrement();
+            scoreIncrement();
             speedIncrement();
             // پخش صدای خوردن غذا
             if (sound) eatingFoodSong.play();
