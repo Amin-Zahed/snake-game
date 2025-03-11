@@ -17,6 +17,9 @@ interface GameState {
   INITIAL_SNAKE_COLOR: string;
   INITIAL_POSITION: Position[];
   INITIAL_FOOD: Position;
+  MAX_SPEED: number;
+  INITIAL_SCORE: number;
+  SCORE_INCREMENT: number;
   start: boolean;
   move: boolean;
   sound: boolean;
@@ -62,6 +65,9 @@ const INITIAL_POSITION: Position[] = [
   { x: 80, y: 160 },
 ];
 const INITIAL_FOOD: Position = { x: 200, y: 200 };
+const MAX_SPEED = 50;
+const INITIAL_SCORE = 0;
+const SCORE_INCREMENT = 10;
 const INITIAL_GAMEPAD_SIZE: GamePadSize = { width: 0, height: 0 };
 
 const useZustand = create<GameState>((set) => ({
@@ -71,12 +77,15 @@ const useZustand = create<GameState>((set) => ({
   INITIAL_SNAKE_COLOR,
   INITIAL_POSITION,
   INITIAL_FOOD,
+  MAX_SPEED,
+  INITIAL_SCORE,
+  SCORE_INCREMENT,
 
   start: false,
   move: false,
   sound: true,
   direction: "right",
-  score: 0,
+  score: INITIAL_SCORE,
   snakeColor: INITIAL_SNAKE_COLOR,
   speed: INITIAL_SPEED,
   lives: INITIAL_LIVES,
@@ -97,13 +106,13 @@ const useZustand = create<GameState>((set) => ({
 
   setSpeedIncrement: () =>
     set((state: GameState) => ({
-      speed: Math.max(50, state.speed - SPEED_INCREMENT),
+      speed: Math.max(MAX_SPEED, state.speed - SPEED_INCREMENT),
     })),
   setDefaultSpeed: () => set({ speed: INITIAL_SPEED }),
 
   setScoreIncrement: () =>
-    set((state: GameState) => ({ score: state.score + 10 })),
-  setDefaultScore: () => set({ score: 0 }),
+    set((state: GameState) => ({ score: state.score + SCORE_INCREMENT })),
+  setDefaultScore: () => set({ score: INITIAL_SCORE }),
 
   setLivesDecrement: () =>
     set((state: GameState) => ({ lives: Math.max(0, state.lives - 1) })),

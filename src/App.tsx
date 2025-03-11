@@ -101,7 +101,7 @@ function App() {
       if (isUniformDirection()) return false; // اگر مار کاملاً یکنواخت حرکت می‌کند، برخورد در نظر گرفته نمی‌شود
       return positionRef.current
         .slice(1)
-        .some((segment: any) => segment.x === head.x && segment.y === head.y);
+        .some((segment) => segment.x === head.x && segment.y === head.y);
     },
     [positionRef.current]
   );
