@@ -37,11 +37,11 @@ interface GameState {
   setSound: (toggleSound: boolean) => void;
   setDirection: (newDirection: "up" | "down" | "left" | "right") => void;
   speedIncrement: () => void;
-  defaultSpeed: () => void;
+  resetSpeed: () => void;
   scoreIncrement: () => void;
-  defaultScore: () => void;
-  setLivesDecrement: () => void;
-  setDefaultLives: () => void;
+  resetScore: () => void;
+  livesDecrement: () => void;
+  resetLives: () => void;
   setChangePosition: (
     update: ((prev: Position[]) => Position[]) | Position[]
   ) => void;
@@ -105,15 +105,15 @@ const useZustand = create<GameState>((set) => ({
     set((state: GameState) => ({
       speed: Math.max(MAX_SPEED, state.speed - SPEED_INCREMENT),
     })),
-  defaultSpeed: () => set({ speed: INITIAL_SPEED }),
+  resetSpeed: () => set({ speed: INITIAL_SPEED }),
 
   scoreIncrement: () =>
     set((state: GameState) => ({ score: state.score + SCORE_INCREMENT })),
-  defaultScore: () => set({ score: INITIAL_SCORE }),
+  resetScore: () => set({ score: INITIAL_SCORE }),
 
-  setLivesDecrement: () =>
+  livesDecrement: () =>
     set((state: GameState) => ({ lives: Math.max(0, state.lives - 1) })),
-  setDefaultLives: () => set({ lives: INITIAL_LIVES }),
+  resetLives: () => set({ lives: INITIAL_LIVES }),
 
   setChangePosition: (update) => {
     set((state) => ({

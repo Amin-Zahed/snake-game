@@ -40,8 +40,8 @@ function App() {
     resetSpeed,
     scoreIncrement,
     resetScore,
-    setLivesDecrement,
-    setDefaultLives,
+    livesDecrement,
+    resetLives,
     setChangePosition,
     setDefaultPosition,
     setChangeFood,
@@ -213,7 +213,7 @@ function App() {
           newHead.y = Math.round(newHead.y / STEP) * STEP;
           if (isCollidingWithBody(newHead)) {
             if (lives > 1) {
-              setLivesDecrement();
+              livesDecrement();
               setMove(false);
               if (sound) lifeLostSong.play();
               setTimeout(() => {
@@ -223,7 +223,7 @@ function App() {
                 setMove(true);
               }, 1000);
             } else {
-              setDefaultLives();
+              resetLives();
               setMove(false);
               if (sound) gameOverSong.play();
               updateRecord(score);
@@ -231,7 +231,7 @@ function App() {
                 setDefaultPosition();
                 resetSpeed();
                 resetScore();
-                setDefaultLives();
+                resetLives();
                 setDirection("right");
                 setChangeFood({ x: 200, y: 200 });
                 setMove(false);
