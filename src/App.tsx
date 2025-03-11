@@ -32,9 +32,8 @@ function App() {
     gamePadSize,
     sound,
     snakeColor,
-    setStart,
-    setMoveTrue,
-    setMoveFalse,
+    isStarted,
+    setMove,
     setSoundTrue,
     setSoundFalse,
     setDirection,
@@ -174,11 +173,11 @@ function App() {
         e.preventDefault(); // ✅ فقط برای کلیدهای مورد استفاده اعمال می‌شود
       }
       if (start && !move && e.code === "Enter") {
-        setMoveTrue();
+        setMove(true);
       } else {
         switch (e.code) {
           case "Space":
-            if (move) setMoveFalse();
+            if (move) setMove(false);
             break;
           case "ArrowUp":
             if (move && direction !== "down") setDirection("up");
@@ -216,17 +215,17 @@ function App() {
           if (isCollidingWithBody(newHead)) {
             if (lives > 1) {
               setLivesDecrement();
-              setMoveFalse();
+              setMove(false);
               if (sound) lifeLostSong.play();
               setTimeout(() => {
                 setDefaultPosition();
                 setDefaultSpeed();
                 setDirection("right");
-                setMoveTrue();
+                setMove(true);
               }, 1000);
             } else {
               setDefaultLives();
-              setMoveFalse();
+              setMove(false);
               if (sound) gameOverSong.play();
               updateRecord(score);
               setTimeout(() => {
@@ -236,7 +235,7 @@ function App() {
                 setDefaultLives();
                 setDirection("right");
                 setChangeFood({ x: 200, y: 200 });
-                setMoveFalse();
+                setMove(false);
               }, 1000);
             }
             if (intervalRef.current) clearInterval(intervalRef.current);
@@ -307,7 +306,9 @@ function App() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={setStart}>Start game</AlertDialogAction>
+            <AlertDialogAction onClick={isStarted}>
+              Start game
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -415,12 +416,12 @@ function App() {
           {move ? (
             <i
               className="fa-solid fa-pause cursor-pointer"
-              onClick={() => setMoveFalse()}
+              onClick={() => setMove(false)}
             ></i>
           ) : (
             <i
               className="fa-solid fa-play cursor-pointer"
-              onClick={() => setMoveTrue()}
+              onClick={() => setMove(true)}
             ></i>
           )}
         </div>

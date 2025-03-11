@@ -32,9 +32,9 @@ interface GameState {
   position: Position[];
   food: Position;
   gamePadSize: GamePadSize;
-  setStart: () => void;
-  setMoveTrue: () => void;
-  setMoveFalse: () => void;
+  isStarted: () => void;
+  setMove: (newMove: boolean) => void;
+  // setMoveFalse: () => void;
   setSoundTrue: () => void;
   setSoundFalse: () => void;
   setDirection: (newDirection: "up" | "down" | "left" | "right") => void;
@@ -96,9 +96,9 @@ const useZustand = create<GameState>((set) => ({
   food: { ...INITIAL_FOOD },
   gamePadSize: { ...INITIAL_GAMEPAD_SIZE },
 
-  setStart: () => set({ start: true }),
-  setMoveTrue: () => set({ move: true }),
-  setMoveFalse: () => set({ move: false }),
+  isStarted: () => set({ start: true }),
+  setMove: (newMove) => set({ move: newMove }),
+  // setMoveFalse: () => set({ move: false }),
   setSoundTrue: () => set({ sound: true }),
   setSoundFalse: () => set({ sound: false }),
 
