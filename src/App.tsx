@@ -34,8 +34,7 @@ function App() {
     snakeColor,
     isStarted,
     setMove,
-    setSoundTrue,
-    setSoundFalse,
+    setSound,
     setDirection,
     setSpeedIncrement,
     setDefaultSpeed,
@@ -321,12 +320,12 @@ function App() {
         {sound ? (
           <i
             className="fa-solid fa-volume-high cursor-pointer mr-20 sm:mr-0"
-            onClick={() => setSoundFalse()}
+            onClick={() => setSound(false)}
           ></i>
         ) : (
           <i
             className="fa-solid fa-volume-xmark cursor-pointer mr-20 sm:mr-0"
-            onClick={() => setSoundTrue()}
+            onClick={() => setSound(true)}
           ></i>
         )}
         <ColorChanger className="cursor-pointer w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]" />
