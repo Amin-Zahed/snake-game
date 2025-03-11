@@ -99,9 +99,7 @@ const useZustand = create<GameState>((set) => ({
   setSound: (toggleSound) => set({ sound: toggleSound }),
 
   setDirection: (newDirection: "up" | "down" | "left" | "right") =>
-    set((state) =>
-      state.direction !== newDirection ? { direction: newDirection } : {}
-    ),
+    set({ direction: newDirection }),
 
   speedIncrement: () =>
     set((state: GameState) => ({
