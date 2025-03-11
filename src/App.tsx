@@ -37,9 +37,9 @@ function App() {
     setSound,
     setDirection,
     speedIncrement,
-    defaultSpeed,
+    resetSpeed,
     scoreIncrement,
-    defaultScore,
+    resetScore,
     setLivesDecrement,
     setDefaultLives,
     setChangePosition,
@@ -218,7 +218,7 @@ function App() {
               if (sound) lifeLostSong.play();
               setTimeout(() => {
                 setDefaultPosition();
-                defaultSpeed();
+                resetSpeed();
                 setDirection("right");
                 setMove(true);
               }, 1000);
@@ -229,8 +229,8 @@ function App() {
               updateRecord(score);
               setTimeout(() => {
                 setDefaultPosition();
-                defaultSpeed();
-                defaultScore();
+                resetSpeed();
+                resetScore();
                 setDefaultLives();
                 setDirection("right");
                 setChangeFood({ x: 200, y: 200 });
