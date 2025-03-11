@@ -32,7 +32,7 @@ function App() {
     gamePadSize,
     sound,
     snakeColor,
-    setStartTrue,
+    setStart,
     setMoveTrue,
     setMoveFalse,
     setSoundTrue,
@@ -307,9 +307,7 @@ function App() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => setStartTrue()}>
-              Start game
-            </AlertDialogAction>
+            <AlertDialogAction onClick={setStart}>Start game</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
