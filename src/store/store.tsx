@@ -47,6 +47,7 @@ interface GameState {
   ) => void;
   resetPosition: () => void;
   setFood: (newFood: Position) => void;
+  resetFood: () => void;
   setGamePadSize: (newGamePadSize: GamePadSize) => void;
   setSnakeColor: (newSnakeColor: string) => void;
   // setDefaultSnakeColor: () => void;
@@ -123,6 +124,7 @@ const useZustand = create<GameState>((set) => ({
   resetPosition: () => set({ position: [...INITIAL_POSITION] }),
 
   setFood: (newFood: Position) => set({ food: { ...newFood } }),
+  resetFood: () => set({ food: INITIAL_FOOD }),
 
   setGamePadSize: (newGamePadSize: GamePadSize) =>
     set({ gamePadSize: { ...newGamePadSize } }),

@@ -45,6 +45,7 @@ function App() {
     setPosition,
     resetPosition,
     setFood,
+    resetFood,
     setGamePadSize,
   } = useZustand();
 
@@ -233,7 +234,7 @@ function App() {
                 resetScore();
                 resetLives();
                 setDirection("right");
-                setFood({ x: 200, y: 200 });
+                resetFood();
                 setMove(false);
               }, 1000);
             }
