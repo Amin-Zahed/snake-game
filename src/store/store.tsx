@@ -42,10 +42,10 @@ interface GameState {
   resetScore: () => void;
   livesDecrement: () => void;
   resetLives: () => void;
-  setChangePosition: (
+  setPosition: (
     update: ((prev: Position[]) => Position[]) | Position[]
   ) => void;
-  setDefaultPosition: () => void;
+  resetPosition: () => void;
   setChangeFood: (newFood: Position) => void;
   setGamePadSize: (newGamePadSize: GamePadSize) => void;
   setSnakeColor: (newSnakeColor: string) => void;
@@ -115,12 +115,12 @@ const useZustand = create<GameState>((set) => ({
     set((state: GameState) => ({ lives: Math.max(0, state.lives - 1) })),
   resetLives: () => set({ lives: INITIAL_LIVES }),
 
-  setChangePosition: (update) => {
+  setPosition: (update) => {
     set((state) => ({
       position: typeof update === "function" ? update(state.position) : update,
     }));
   },
-  setDefaultPosition: () => set({ position: [...INITIAL_POSITION] }),
+  resetPosition: () => set({ position: [...INITIAL_POSITION] }),
 
   setChangeFood: (newFood: Position) => set({ food: { ...newFood } }),
 

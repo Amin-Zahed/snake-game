@@ -42,8 +42,8 @@ function App() {
     resetScore,
     livesDecrement,
     resetLives,
-    setChangePosition,
-    setDefaultPosition,
+    setPosition,
+    resetPosition,
     setChangeFood,
     setGamePadSize,
   } = useZustand();
@@ -202,7 +202,7 @@ function App() {
   useEffect(() => {
     if (move) {
       intervalRef.current = setInterval(() => {
-        setChangePosition((prevPosition) => {
+        setPosition((prevPosition) => {
           let newHead = { ...prevPosition[0] };
           if (direction === "right") newHead.x += STEP;
           if (direction === "left") newHead.x -= STEP;
@@ -217,7 +217,7 @@ function App() {
               setMove(false);
               if (sound) lifeLostSong.play();
               setTimeout(() => {
-                setDefaultPosition();
+                resetPosition();
                 resetSpeed();
                 setDirection("right");
                 setMove(true);
@@ -228,7 +228,7 @@ function App() {
               if (sound) gameOverSong.play();
               updateRecord(score);
               setTimeout(() => {
-                setDefaultPosition();
+                resetPosition();
                 resetSpeed();
                 resetScore();
                 resetLives();
