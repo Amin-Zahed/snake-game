@@ -121,6 +121,7 @@ const useZustand = create<GameState>((set) => ({
       position: typeof update === "function" ? update(state.position) : update,
     }));
   },
+
   resetPosition: () => set({ position: [...INITIAL_POSITION] }),
 
   setFood: (newFood: Position) => set({ food: { ...newFood } }),
