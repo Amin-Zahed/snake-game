@@ -50,7 +50,7 @@ interface GameState {
   resetFood: () => void;
   setGamePadSize: (newGamePadSize: GamePadSize) => void;
   setSnakeColor: (newSnakeColor: string) => void;
-  // setDefaultSnakeColor: () => void;
+  // resetSnakeColor: () => void;
 }
 
 const STEP = 20;
@@ -130,7 +130,7 @@ const useZustand = create<GameState>((set) => ({
     set({ gamePadSize: { ...newGamePadSize } }),
 
   setSnakeColor: (newSnakeColor) => set({ snakeColor: newSnakeColor }),
-  // setDefaultSnakeColor: () => set({ snakeColor: INITIAL_SNAKE_COLOR }),
+  // resetSnakeColor: () => set({ snakeColor: INITIAL_SNAKE_COLOR }),
 }));
 
 export default useZustand;
