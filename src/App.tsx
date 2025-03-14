@@ -44,7 +44,7 @@ function App() {
     resetLives,
     setPosition,
     resetPosition,
-    setChangeFood,
+    setFood,
     setGamePadSize,
   } = useZustand();
 
@@ -233,7 +233,7 @@ function App() {
                 resetScore();
                 resetLives();
                 setDirection("right");
-                setChangeFood({ x: 200, y: 200 });
+                setFood({ x: 200, y: 200 });
                 setMove(false);
               }, 1000);
             }
@@ -250,7 +250,7 @@ function App() {
           newHead.y = Math.floor(newHead.y / STEP) * STEP;
           // بررسی خوردن غذا توسط مار
           if (newHead.x === food.x && newHead.y === food.y) {
-            setChangeFood(generateRandomFood());
+            setFood(generateRandomFood());
             scoreIncrement();
             speedIncrement();
             // پخش صدای خوردن غذا
