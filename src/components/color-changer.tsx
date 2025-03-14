@@ -1,8 +1,8 @@
-import useZustand from "@/store/store";
+import useOptions from "@/store/gameOptions-store";
 import { useCallback } from "react";
 
 function ColorChanger(props: React.SVGProps<SVGSVGElement>) {
-  const { snakeColor, setSnakeColor } = useZustand();
+  const { snakeColor, setSnakeColor } = useOptions();
 
   const snakeColorHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

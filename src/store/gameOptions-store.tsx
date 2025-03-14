@@ -13,6 +13,7 @@ const INITIAL_SNAKE_COLOR = "#16A34A";
 
 const useOptions = create<GameOptionsStore>((set) => ({
   INITIAL_SNAKE_COLOR,
+
   snakeColor: INITIAL_SNAKE_COLOR,
   sound: true,
 

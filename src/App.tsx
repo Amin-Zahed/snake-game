@@ -2,7 +2,9 @@ import { useEffect, useRef, useCallback } from "react";
 import "./App.css";
 import ColorChanger from "./components/color-changer";
 import { ModeToggle } from "./components/mode-toggle";
-import useZustand from "./store/store.tsx";
+import useBasic from "./store/basic-store.tsx";
+import useOptions from "./store/gameOptions-store.tsx";
+import useLogic from "./store/gameLogic-store.tsx";
 import SNAKE_DANCE_SONG from "./assets/songs/snake-dance.mp3";
 import EATING_FOOD_SONG from "./assets/songs/crunchy-eating.mp3";
 import LIFE_LOST_SONG from "./assets/songs/life-lost.mp3";
@@ -18,24 +20,20 @@ import {
 } from "@/components/ui/alert-dialog";
 
 function App() {
+  const { start, move, gamePadSize, isStarted, setMove, setGamePadSize } =
+    useBasic();
+  const { sound, snakeColor, setSound } = useOptions();
   const {
     STEP,
     INITIAL_SCORE,
-    start,
-    move,
     direction,
     speed,
     score,
     lives,
     position,
     food,
-    gamePadSize,
-    sound,
-    snakeColor,
-    isStarted,
-    setMove,
-    setSound,
     setDirection,
+    resetDirection,
     speedIncrement,
     resetSpeed,
     scoreIncrement,
@@ -46,8 +44,7 @@ function App() {
     resetPosition,
     setFood,
     resetFood,
-    setGamePadSize,
-  } = useZustand();
+  } = useLogic();
 
   const snakeDanceSong: HTMLAudioElement = new Audio(SNAKE_DANCE_SONG);
   const eatingFoodSong: HTMLAudioElement = new Audio(EATING_FOOD_SONG);
@@ -56,7 +53,7 @@ function App() {
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const gamePadRef = useRef<HTMLDivElement | null>(null);
-  const positionRef = useRef(position); // ✅ ذخیره موقعیت آخرین فریم
+  const positionRef = useRef(position);
 
   const updateRecord = useCallback((record: string | number) => {
     const storedRecord = localStorage.getItem("record");
@@ -82,12 +79,11 @@ function App() {
     [move, direction]
   );
 
-  /** بررسی یکنواخت بودن جهت حرکت مار */
   const isUniformDirection = useCallback(() => {
     const dx = position[1].x - position[0].x;
     const dy = position[1].y - position[0].y;
     return position.every((segment: any, index: any) => {
-      if (index === 0) return true; // سر مار نیازی به بررسی ندارد
+      if (index === 0) return true;
       const prevSegment = position[index - 1];
       return (
         segment.x - prevSegment.x === dx && segment.y - prevSegment.y === dy
@@ -95,10 +91,9 @@ function App() {
     });
   }, [position]);
 
-  /** بررسی برخورد سر مار با بدن، با در نظر گرفتن یکنواختی حرکت */
   const isCollidingWithBody = useCallback(
     (head: { x: number; y: number }) => {
-      if (isUniformDirection()) return false; // اگر مار کاملاً یکنواخت حرکت می‌کند، برخورد در نظر گرفته نمی‌شود
+      if (isUniformDirection()) return false;
       return positionRef.current
         .slice(1)
         .some((segment) => segment.x === head.x && segment.y === head.y);
@@ -117,7 +112,6 @@ function App() {
     while (!isValidPosition) {
       x = Math.floor(Math.random() * (maxX / STEP)) * STEP;
       y = Math.floor(Math.random() * (maxY / STEP)) * STEP;
-      // ✅ تراز کردن مختصات غذا
       x = Math.floor(x / STEP) * STEP;
       y = Math.floor(y / STEP) * STEP;
       isValidPosition =
@@ -147,7 +141,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    positionRef.current = position; // ✅ آپدیت موقعیت مار در هر تغییر state
+    positionRef.current = position;
   }, [position]);
 
   useEffect(() => {
@@ -170,7 +164,7 @@ function App() {
           "ArrowRight",
         ].includes(e.code)
       ) {
-        e.preventDefault(); // ✅ فقط برای کلیدهای مورد استفاده اعمال می‌شود
+        e.preventDefault();
       }
       if (start && !move && e.code === "Enter") {
         setMove(true);
@@ -209,7 +203,6 @@ function App() {
           if (direction === "left") newHead.x -= STEP;
           if (direction === "down") newHead.y += STEP;
           if (direction === "up") newHead.y -= STEP;
-          // ✅ جلوگیری از مشکلات ناهم‌ترازی
           newHead.x = Math.round(newHead.x / STEP) * STEP;
           newHead.y = Math.round(newHead.y / STEP) * STEP;
           if (isCollidingWithBody(newHead)) {
@@ -220,7 +213,7 @@ function App() {
               setTimeout(() => {
                 resetPosition();
                 resetSpeed();
-                setDirection("right");
+                resetDirection();
                 setMove(true);
               }, 1000);
             } else {
@@ -233,7 +226,7 @@ function App() {
                 resetSpeed();
                 resetScore();
                 resetLives();
-                setDirection("right");
+                resetDirection();
                 resetFood();
                 setMove(false);
               }, 1000);
@@ -241,20 +234,16 @@ function App() {
             if (intervalRef.current) clearInterval(intervalRef.current);
             return prevPosition;
           }
-          // ✅ اصلاح ورود از مرز برای جلوگیری از برخورد اشتباه
           if (newHead.x >= gamePadSize.width) newHead.x = 0;
           if (newHead.x < 0) newHead.x = gamePadSize.width - STEP;
           if (newHead.y >= gamePadSize.height) newHead.y = 0;
           if (newHead.y < 0) newHead.y = gamePadSize.height - STEP;
-          // ✅ تراز کردن مقادیر
           newHead.x = Math.floor(newHead.x / STEP) * STEP;
           newHead.y = Math.floor(newHead.y / STEP) * STEP;
-          // بررسی خوردن غذا توسط مار
           if (newHead.x === food.x && newHead.y === food.y) {
             setFood(generateRandomFood());
             scoreIncrement();
             speedIncrement();
-            // پخش صدای خوردن غذا
             if (sound) eatingFoodSong.play();
             return [newHead, ...prevPosition];
           }
@@ -431,29 +420,3 @@ function App() {
 }
 
 export default App;
-
-// بررسی می کند که همیشه gamepadSize بر step بخشپذیر باشد
-// const updateGamePadSize = () => {
-//   if (gamePadRef.current) {
-//     setGamePadSize({
-//       width: Math.floor(gamePadRef.current.clientWidth / STEP) * STEP,
-//       height: Math.floor(gamePadRef.current.clientHeight / STEP) * STEP,
-//     });
-//   }
-// };
-
-// const updateRecord = (record: string | number) => {
-//   if (
-//     localStorage.getItem("record") &&
-//     Number(localStorage.getItem("record")) < Number(record)
-//   ) {
-//     localStorage.setItem("record", String(record));
-//   } else {
-//     localStorage.setItem("record", String(record));
-//   }
-// };
-
-// useEffect(
-//   () => setSnakeColor(localStorage.getItem("snak-color")),
-//   [snakeColor]
-// );

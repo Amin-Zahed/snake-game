@@ -23,6 +23,7 @@ interface GameLogicStore {
   position: Position[];
   food: Position;
   setDirection: (newDirection: "up" | "down" | "left" | "right") => void;
+  resetDirection: () => void;
   speedIncrement: () => void;
   resetSpeed: () => void;
   scoreIncrement: () => void;
