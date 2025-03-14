@@ -1,5 +1,5 @@
 import useOptions from "@/store/gameOptions-store";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 function ColorChanger(props: React.SVGProps<SVGSVGElement>) {
   const { snakeColor, setSnakeColor } = useOptions();
@@ -8,10 +8,14 @@ function ColorChanger(props: React.SVGProps<SVGSVGElement>) {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newColor = e.target.value;
       setSnakeColor(newColor);
-      localStorage.setItem("snake-color", newColor);
+      // localStorage.setItem("snake-color", newColor);
     },
     [snakeColor]
   );
+
+  useEffect(() => {
+    localStorage.setItem("snake-color", snakeColor);
+  }, [snakeColor]);
 
   return (
     <label>

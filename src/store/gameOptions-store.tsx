@@ -6,7 +6,7 @@ interface GameOptionsStore {
   sound: boolean;
   setSnakeColor: (newSnakeColor: string) => void;
   setSound: (toggleSound: boolean) => void;
-  // resetSnakeColor: () => void;
+  resetSnakeColor: () => void;
 }
 
 const INITIAL_SNAKE_COLOR = "#16A34A";
@@ -18,7 +18,7 @@ const useOptions = create<GameOptionsStore>((set) => ({
   sound: true,
 
   setSnakeColor: (newSnakeColor) => set({ snakeColor: newSnakeColor }),
-  // resetSnakeColor: () => set({ snakeColor: INITIAL_SNAKE_COLOR }),
+  resetSnakeColor: () => set({ snakeColor: INITIAL_SNAKE_COLOR }),
 
   setSound: (toggleSound) => set({ sound: toggleSound }),
 }));

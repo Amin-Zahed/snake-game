@@ -22,7 +22,7 @@ import {
 function App() {
   const { start, move, gamePadSize, isStarted, setMove, setGamePadSize } =
     useBasic();
-  const { sound, snakeColor, setSound } = useOptions();
+  const { sound, snakeColor, resetSnakeColor, setSound } = useOptions();
   const {
     STEP,
     INITIAL_SCORE,
@@ -318,6 +318,10 @@ function App() {
             onClick={() => setSound(true)}
           ></i>
         )}
+        <i
+          className="fa-solid fa-arrows-rotate cursor-pointer"
+          onClick={resetSnakeColor}
+        ></i>
         <ColorChanger className="cursor-pointer w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]" />
       </div>
       <div
