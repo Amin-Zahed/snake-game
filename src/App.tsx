@@ -132,8 +132,6 @@ function App() {
     };
     updateGamePadSize();
     updateRecord(score);
-    if (!localStorage.getItem("snake-color"))
-      localStorage.setItem("snake-color", snakeColor);
     window.addEventListener("resize", updateGamePadSize);
     return () => {
       window.removeEventListener("resize", updateGamePadSize);
