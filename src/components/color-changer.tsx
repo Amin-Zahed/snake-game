@@ -8,7 +8,6 @@ function ColorChanger(props: React.SVGProps<SVGSVGElement>) {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newColor = e.target.value;
       setSnakeColor(newColor);
-      // localStorage.setItem("snake-color", newColor);
     },
     [snakeColor]
   );
