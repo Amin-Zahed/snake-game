@@ -235,6 +235,7 @@ function App() {
                 resetDirection();
                 resetFood();
                 setMove(false);
+                snakeDanceSongRef.current.load();
               }, 1000);
             }
             if (intervalRef.current) clearInterval(intervalRef.current);
