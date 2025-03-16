@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback, useMemo } from "react";
 import "./App.css";
 import ColorChanger from "./components/color-changer";
-import { ModeToggle } from "./components/mode-toggle";
+import ModeToggle from "./components/mode-toggle";
 import useBasic from "./store/basic-store.tsx";
 import useOptions from "./store/gameOptions-store.tsx";
 import useLogic, { Position } from "./store/gameLogic-store.tsx";

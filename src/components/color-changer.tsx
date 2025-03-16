@@ -1,5 +1,5 @@
 import useOptions from "@/store/gameOptions-store";
-import { useCallback, useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 
 function ColorChanger(props: React.SVGProps<SVGSVGElement>) {
   const { snakeColor, setSnakeColor } = useOptions();
@@ -58,6 +58,6 @@ function ColorChanger(props: React.SVGProps<SVGSVGElement>) {
     </label>
   );
 }
-export default ColorChanger;
+export default memo(ColorChanger);
 
 // stroke="#a21caf"
