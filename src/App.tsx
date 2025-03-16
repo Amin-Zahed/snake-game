@@ -4,7 +4,7 @@ import ColorChanger from "./components/color-changer";
 import { ModeToggle } from "./components/mode-toggle";
 import useBasic from "./store/basic-store.tsx";
 import useOptions from "./store/gameOptions-store.tsx";
-import useLogic from "./store/gameLogic-store.tsx";
+import useLogic, { Position } from "./store/gameLogic-store.tsx";
 import SNAKE_DANCE_SONG from "./assets/songs/snake-dance.mp3";
 import EATING_FOOD_SONG from "./assets/songs/crunchy-eating.mp3";
 import LIFE_LOST_SONG from "./assets/songs/life-lost.mp3";
@@ -46,10 +46,14 @@ function App() {
     resetFood,
   } = useLogic();
 
-  const snakeDanceSong: HTMLAudioElement = new Audio(SNAKE_DANCE_SONG);
-  const eatingFoodSong: HTMLAudioElement = new Audio(EATING_FOOD_SONG);
-  const lifeLostSong: HTMLAudioElement = new Audio(LIFE_LOST_SONG);
-  const gameOverSong: HTMLAudioElement = new Audio(GAME_OVER_SONG);
+  const snakeDanceSongRef = useRef<HTMLAudioElement>(
+    new Audio(SNAKE_DANCE_SONG)
+  );
+  const eatingFoodSongRef = useRef<HTMLAudioElement>(
+    new Audio(EATING_FOOD_SONG)
+  );
+  const lifeLostSongRef = useRef<HTMLAudioElement>(new Audio(LIFE_LOST_SONG));
+  const gameOverSongRef = useRef<HTMLAudioElement>(new Audio(GAME_OVER_SONG));
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const gamePadRef = useRef<HTMLDivElement | null>(null);
@@ -82,7 +86,7 @@ function App() {
   const isUniformDirection = useCallback(() => {
     const dx = position[1].x - position[0].x;
     const dy = position[1].y - position[0].y;
-    return position.every((segment: any, index: any) => {
+    return position.every((segment: Position, index: number) => {
       if (index === 0) return true;
       const prevSegment = position[index - 1];
       return (
@@ -115,7 +119,7 @@ function App() {
       x = Math.floor(x / STEP) * STEP;
       y = Math.floor(y / STEP) * STEP;
       isValidPosition =
-        !position.some((pos: any) => pos.x === x && pos.y === y) &&
+        !position.some((pos: Position) => pos.x === x && pos.y === y) &&
         !(x === food.x && y === food.y);
     }
     return { x, y };
@@ -144,10 +148,10 @@ function App() {
 
   useEffect(() => {
     if (move && sound) {
-      snakeDanceSong.play();
-      snakeDanceSong.loop = true;
+      snakeDanceSongRef.current.play();
+      snakeDanceSongRef.current.loop = true;
     }
-    return () => snakeDanceSong.pause();
+    return () => snakeDanceSongRef.current.pause();
   }, [sound, move]);
 
   useEffect(() => {
@@ -207,7 +211,9 @@ function App() {
             if (lives > 1) {
               livesDecrement();
               setMove(false);
-              if (sound) lifeLostSong.play();
+              if (sound) {
+                lifeLostSongRef.current.play();
+              }
               setTimeout(() => {
                 resetPosition();
                 resetSpeed();
@@ -217,8 +223,10 @@ function App() {
             } else {
               resetLives();
               setMove(false);
-              if (sound) gameOverSong.play();
               updateRecord(score);
+              if (sound) {
+                gameOverSongRef.current.play();
+              }
               setTimeout(() => {
                 resetPosition();
                 resetSpeed();
@@ -242,7 +250,9 @@ function App() {
             setFood(generateRandomFood());
             scoreIncrement();
             speedIncrement();
-            if (sound) eatingFoodSong.play();
+            if (sound) {
+              eatingFoodSongRef.current.play();
+            }
             return [newHead, ...prevPosition];
           }
           return [newHead, ...prevPosition.slice(0, -1)];

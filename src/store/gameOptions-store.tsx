@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 interface GameOptionsStore {
   INITIAL_SNAKE_COLOR: string;
-  snakeColor: string | any;
+  snakeColor: string;
   sound: boolean;
   setSnakeColor: (newSnakeColor: string) => void;
   setSound: (toggleSound: boolean) => void;
@@ -17,7 +17,7 @@ const useOptions = create<GameOptionsStore>((set) => ({
   sound: true,
 
   snakeColor: localStorage.getItem("snake-color")
-    ? localStorage.getItem("snake-color")
+    ? localStorage.getItem("snake-color")!
     : INITIAL_SNAKE_COLOR,
 
   setSnakeColor: (newSnakeColor) => set({ snakeColor: newSnakeColor }),
