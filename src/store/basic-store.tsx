@@ -9,7 +9,7 @@ interface BasicStore {
   start: boolean;
   move: boolean;
   gamePadSize: GamePadSize;
-  isStarted: () => void;
+  started: () => void;
   setMove: (toggleMove: boolean) => void;
   setGamePadSize: (newGamePadSize: GamePadSize) => void;
 }
@@ -23,7 +23,7 @@ const useBasic = create<BasicStore>((set) => ({
   move: false,
   gamePadSize: { ...INITIAL_GAMEPAD_SIZE },
 
-  isStarted: () => set({ start: true }),
+  started: () => set({ start: true }),
   setMove: (toggleMove) => set({ move: toggleMove }),
   setGamePadSize: (newGamePadSize: GamePadSize) =>
     set({ gamePadSize: { ...newGamePadSize } }),

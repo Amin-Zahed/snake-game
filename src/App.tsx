@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 function App() {
-  const { start, move, gamePadSize, isStarted, setMove, setGamePadSize } =
+  const { start, move, gamePadSize, started, setMove, setGamePadSize } =
     useBasic();
   const { sound, snakeColor, resetSnakeColor, setSound } = useOptions();
   const {
@@ -305,9 +305,7 @@ function App() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={isStarted}>
-              Start game
-            </AlertDialogAction>
+            <AlertDialogAction onClick={started}>Start game</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
