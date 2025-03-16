@@ -54,10 +54,9 @@ function App() {
   );
   const lifeLostSongRef = useRef<HTMLAudioElement>(new Audio(LIFE_LOST_SONG));
   const gameOverSongRef = useRef<HTMLAudioElement>(new Audio(GAME_OVER_SONG));
-
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const gamePadRef = useRef<HTMLDivElement | null>(null);
-  const positionRef = useRef(position);
+  const positionRef = useRef<Position[]>(position);
 
   const updateRecord = useCallback((record: string | number) => {
     const storedRecord = localStorage.getItem("record");
