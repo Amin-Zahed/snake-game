@@ -420,13 +420,13 @@ function App() {
           {move ? (
             <i
               className="fa-solid fa-pause cursor-pointer"
-              title="Click to pause the game"
+              title="Click to stops the game"
               onClick={() => setMove(false)}
             ></i>
           ) : (
             <i
               className="fa-solid fa-play cursor-pointer"
-              title="Click to play the game"
+              title="Click to starts the game"
               onClick={() => setMove(true)}
             ></i>
           )}
