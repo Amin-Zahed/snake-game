@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useMemo } from "react";
 import "./App.css";
 import ColorChanger from "./components/color-changer";
 import { ModeToggle } from "./components/mode-toggle";
@@ -46,14 +46,16 @@ function App() {
     resetFood,
   } = useLogic();
 
-  const snakeDanceSongRef = useRef<HTMLAudioElement>(
-    new Audio(SNAKE_DANCE_SONG)
+  const sounds = useMemo(
+    () => ({
+      snakeDance: new Audio(SNAKE_DANCE_SONG),
+      eatingFood: new Audio(EATING_FOOD_SONG),
+      lifeLost: new Audio(LIFE_LOST_SONG),
+      gameOver: new Audio(GAME_OVER_SONG),
+    }),
+    []
   );
-  const eatingFoodSongRef = useRef<HTMLAudioElement>(
-    new Audio(EATING_FOOD_SONG)
-  );
-  const lifeLostSongRef = useRef<HTMLAudioElement>(new Audio(LIFE_LOST_SONG));
-  const gameOverSongRef = useRef<HTMLAudioElement>(new Audio(GAME_OVER_SONG));
+
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const gamePadRef = useRef<HTMLDivElement | null>(null);
   const positionRef = useRef<Position[]>(position);
@@ -147,10 +149,10 @@ function App() {
 
   useEffect(() => {
     if (move && sound) {
-      snakeDanceSongRef.current.play();
-      snakeDanceSongRef.current.loop = true;
+      sounds.snakeDance.play();
+      sounds.snakeDance.loop = true;
     }
-    return () => snakeDanceSongRef.current.pause();
+    return () => sounds.snakeDance.pause();
   }, [sound, move]);
 
   useEffect(() => {
@@ -211,7 +213,7 @@ function App() {
               livesDecrement();
               setMove(false);
               if (sound) {
-                lifeLostSongRef.current.play();
+                sounds.lifeLost.play();
               }
               setTimeout(() => {
                 resetPosition();
@@ -224,7 +226,7 @@ function App() {
               setMove(false);
               updateRecord(score);
               if (sound) {
-                gameOverSongRef.current.play();
+                sounds.gameOver.play();
               }
               setTimeout(() => {
                 resetPosition();
@@ -234,7 +236,7 @@ function App() {
                 resetDirection();
                 resetFood();
                 setMove(false);
-                snakeDanceSongRef.current.load();
+                sounds.snakeDance.load();
               }, 1000);
             }
             if (intervalRef.current) clearInterval(intervalRef.current);
@@ -251,7 +253,7 @@ function App() {
             scoreIncrement();
             speedIncrement();
             if (sound) {
-              eatingFoodSongRef.current.play();
+              sounds.eatingFood.play();
             }
             return [newHead, ...prevPosition];
           }
