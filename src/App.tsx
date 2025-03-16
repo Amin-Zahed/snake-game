@@ -318,16 +318,19 @@ function App() {
         {sound ? (
           <i
             className="fa-solid fa-volume-high cursor-pointer mr-20 sm:mr-0"
+            title="Click to mute"
             onClick={() => setSound(false)}
           ></i>
         ) : (
           <i
             className="fa-solid fa-volume-xmark cursor-pointer mr-20 sm:mr-0"
+            title="Click to connect audio"
             onClick={() => setSound(true)}
           ></i>
         )}
         <i
           className="fa-solid fa-arrows-rotate cursor-pointer"
+          title="Click to return the snake color to its default state"
           onClick={resetSnakeColor}
         ></i>
         <ColorChanger className="cursor-pointer w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]" />
@@ -417,11 +420,13 @@ function App() {
           {move ? (
             <i
               className="fa-solid fa-pause cursor-pointer"
+              title="Click to pause the game"
               onClick={() => setMove(false)}
             ></i>
           ) : (
             <i
               className="fa-solid fa-play cursor-pointer"
+              title="Click to play the game"
               onClick={() => setMove(true)}
             ></i>
           )}

@@ -17,7 +17,7 @@ function ColorChanger(props: React.SVGProps<SVGSVGElement>) {
   }, [snakeColor]);
 
   return (
-    <label>
+    <label title="Click to choose your snake color">
       <input
         type="color"
         className="w-0 h-0 opacity-0"
