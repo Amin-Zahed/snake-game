@@ -59,5 +59,3 @@ function ColorChanger(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 export default memo(ColorChanger);
-
-// stroke="#a21caf"

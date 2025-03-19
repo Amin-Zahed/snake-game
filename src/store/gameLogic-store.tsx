@@ -74,8 +74,7 @@ const useLogic = create<GameLogicStore>((set) => ({
   position: [...INITIAL_POSITION],
   food: { ...INITIAL_FOOD },
 
-  setDirection: (newDirection: "up" | "down" | "left" | "right") =>
-    set({ direction: newDirection }),
+  setDirection: (newDirection) => set({ direction: newDirection }),
   resetDirection: () => set({ direction: "right" }),
 
   speedIncrement: () =>
