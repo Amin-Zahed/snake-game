@@ -56,7 +56,7 @@ function App() {
     []
   );
 
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const gamePadRef = useRef<HTMLDivElement | null>(null);
   const positionRef = useRef<Position[]>(position);
 
@@ -363,7 +363,7 @@ function App() {
         ref={gamePadRef}
         className=" bg-card row-start-3 row-end-11 col-start-2 col-end-12 relative z-0 overflow-hidden ring-8 ring-zinc-400 dark:ring-zinc-600"
       >
-        {position.map((pos: any, index: any) => (
+        {position.map((pos: Position, index: React.Key) => (
           <div
             id="snake"
             key={index}
