@@ -56,8 +56,8 @@ function App() {
     []
   );
 
-  const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const gamePadRef = useRef<HTMLDivElement | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout>(undefined);
+  const gamePadRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef<Position[]>(position);
 
   const updateRecord = useCallback((record: string | number) => {
@@ -272,7 +272,7 @@ function App() {
       className="bg-background w-lvw h-dvh grid grid-cols-12 grid-rows-12 z-10"
     >
       <AlertDialog defaultOpen={true}>
-        <AlertDialogContent>
+        <AlertDialogContent className="overflow-y-auto">
           <AlertDialogHeader>
             <AlertDialogTitle>How to play the game :</AlertDialogTitle>
             <AlertDialogDescription>
@@ -306,6 +306,42 @@ function App() {
               <strong>If you are using any type of device : </strong>
               <br />- there is a control panel at the bottom of the screen to
               control the game.
+            </AlertDialogDescription>
+            <AlertDialogTitle>Brief description of the game :</AlertDialogTitle>
+            <AlertDialogDescription>
+              - You can change the game theme to one of three modes: Dark,
+              Light, and System by clicking on the theme icon in the top left
+              corner of the screen.
+              <br /> - By clicking on the snake icon at the top right of the
+              screen and selecting the desired color, you can change the color
+              of the snake to any color you like. You can easily change the
+              color of the snake to its original color anytime you like by
+              clicking on the <i className="fa-solid fa-arrows-rotate"></i>{" "}
+              icon.
+              <br /> - You can mute the music by clicking on the{" "}
+              <i className="fa-solid fa-volume-high"></i> icon and reconnect the
+              music by clicking on the{" "}
+              <i className="fa-solid fa-volume-xmark"></i> icon.
+              <br /> - You can pause the game during play and then resume it at
+              any time. The game will start again from the same point where it
+              was stopped.
+              <br />
+              - Each time the snake eats a frog, 10 points will be added to your
+              score. You can see your score in the top center of the screen.
+              <br />
+              - You can also see your highest score ever earned in the top right
+              of the screen.
+              <br /> - In this game, you have 3 lives, which are displayed in
+              the upper left corner by the{" "}
+              <i className="fa-solid fa-heart text-red-600"></i> icons, and you
+              lose one of them every time the snake's head collides with its
+              body.
+              <br /> - After you lose your last life, the game will end and the
+              game will start over from the beginning without refreshing the web
+              page.
+              <br />- If you close this web page and return to it later, you
+              will see that your snake color and page theme are the same as the
+              snake color and page theme you last selected.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -344,8 +380,8 @@ function App() {
         className="row-start-2 row-end-3 col-start-2 col-end-12 text-sm sm:text-base flex justify-between items-center font-black"
       >
         <div id="soul">
-          {[...Array(lives)].map((_, index) => (
-            <i key={index} className="fa-solid fa-heart text-red-600"></i>
+          {[...Array(lives)].map(() => (
+            <i className="fa-solid fa-heart text-red-600"></i>
           ))}
         </div>
         <div id="score" className="sm:ml-20">
@@ -363,10 +399,9 @@ function App() {
         ref={gamePadRef}
         className=" bg-card row-start-3 row-end-11 col-start-2 col-end-12 relative z-0 overflow-hidden ring-8 ring-zinc-400 dark:ring-zinc-600"
       >
-        {position.map((pos: Position, index: React.Key) => (
+        {position.map((pos: Position) => (
           <div
             id="snake"
-            key={index}
             className="w-[20px] h-[20px] z-20 absolute"
             style={{
               left: `${pos.x}px`,
