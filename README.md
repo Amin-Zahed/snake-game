@@ -1,13 +1,18 @@
 # 🐍 Snake Game
 
-A classic Snake game built with **React**, **TypeScript**, **shadcnUI**, and **TailwindCSS**.
+A classic Snake game built Fully **Responsive Design** for optimal viewing on all devices with **React**, **TypeScript**, **Zustand**, **Shadcn/UI**, and **TailwindCSS**.
 
 ## 🚀 Features
 
-- Built using **React** and **TypeScript**
-- Styled with **TailwindCSS** for a modern look
-- Some UI components provided by **shadcn/ui**
-- Fully **responsive design** for optimal viewing on all devices
+- You can change the game theme to one of three modes: dark, light, and system.
+- It has a control panel at the bottom of the screen for easy use on any type of device.
+- You can change the color of the snake to any color you want and return it to its original color whenever you like.
+- It has the ability to play and pause music while playing the game.
+- You can pause the game while playing and then resume the game from the same point at any time.
+- Each time the snake eats a frog, 10 points will be added to your score, and you can see your score in the top center of the screen.
+- You can also see your highest score ever earned in the top right of the screen.
+- In this game, you have 3 lives, which are displayed in the upper left corner, and you lose one of them every time the snake's head collides with its body.
+- After you lose your last life, the game will end and the game will start over from the beginning without refreshing the web page.
 
 ## 📸 Preview
 
