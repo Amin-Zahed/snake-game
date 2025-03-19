@@ -276,11 +276,15 @@ function App() {
           <AlertDialogHeader>
             <AlertDialogTitle>How to play the game :</AlertDialogTitle>
             <AlertDialogDescription>
-              You can use the following keys to contorl the game: <br />- press{" "}
+              <strong>
+                If you are using devices with a keyboard, you can use the
+                following keys to control the game :{" "}
+              </strong>
+              <br />- press{" "}
               <kbd className="bg-slate-200 rounded-[3px] border border-solid border-gray-500 shadow-inner inline-block font-bold leading-none py-[2px] px-1 whitespace-nowrap">
                 Enter
               </kbd>{" "}
-              to starts the game <br />- press{" "}
+              to start the game <br />- press{" "}
               <kbd className="bg-slate-200 rounded-[3px] border border-solid border-gray-500 shadow-inner inline-block font-bold leading-none py-[2px] px-1 whitespace-nowrap">
                 Space
               </kbd>{" "}
@@ -298,14 +302,14 @@ function App() {
                 <i className="fa-solid fa-arrow-down"></i>
               </kbd>{" "}
               to change the snake's direction <br />
-              <strong>Notes:</strong>
-              <br />- screen touch users can use swapping to change the snake's
-              direction <br />- there is a control panel provided on the bottom
-              of the page to control the snake
+              <br />
+              <strong>If you are using any type of device : </strong>
+              <br />- there is a control panel at the bottom of the screen to
+              control the game.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={started}>Start game</AlertDialogAction>
+            <AlertDialogAction onClick={started}>I Realized</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -426,7 +430,7 @@ function App() {
           ) : (
             <i
               className="fa-solid fa-play cursor-pointer"
-              title="Click to starts the game"
+              title="Click to start the game"
               onClick={() => setMove(true)}
             ></i>
           )}
