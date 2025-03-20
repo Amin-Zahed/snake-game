@@ -4,8 +4,8 @@ A classic Snake game built Fully **Responsive Design** for optimal viewing on al
 
 ## 🚀 Features
 
-- You can change the game theme to one of three modes: dark, light, and system.
 - It has a control panel at the bottom of the screen for easy use on any type of device.
+- You can change the game theme to one of three modes: dark, light, and system.
 - You can change the color of the snake to any color you want and return it to its original color whenever you like.
 - It has the ability to play and pause music while playing the game.
 - You can pause the game during play and then resume it at

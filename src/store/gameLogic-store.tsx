@@ -5,6 +5,13 @@ export interface Position {
   y: number;
 }
 
+export enum DIRECTION {
+  RIGHT = "right",
+  LEFT = "left",
+  UP = "up",
+  DOWN = "down",
+}
+
 interface GameLogicStore {
   STEP: number;
   INITIAL_SPEED: number;
@@ -16,13 +23,13 @@ interface GameLogicStore {
   INITIAL_SCORE: number;
   SCORE_INCREMENT: number;
   INITIAL_DIRECTION: string;
-  direction: "up" | "down" | "left" | "right";
+  direction: DIRECTION;
   score: number;
   speed: number;
   lives: number;
   position: Position[];
   food: Position;
-  setDirection: (newDirection: "up" | "down" | "left" | "right") => void;
+  setDirection: (newDirection: DIRECTION) => void;
   resetDirection: () => void;
   speedIncrement: () => void;
   resetSpeed: () => void;
@@ -53,7 +60,7 @@ const INITIAL_FOOD: Position = { x: 200, y: 200 };
 const MAX_SPEED = 50;
 const INITIAL_SCORE = 0;
 const SCORE_INCREMENT = 10;
-const INITIAL_DIRECTION = "right";
+const INITIAL_DIRECTION = DIRECTION.RIGHT;
 
 const useLogic = create<GameLogicStore>((set) => ({
   INITIAL_SPEED,
@@ -75,7 +82,7 @@ const useLogic = create<GameLogicStore>((set) => ({
   food: { ...INITIAL_FOOD },
 
   setDirection: (newDirection) => set({ direction: newDirection }),
-  resetDirection: () => set({ direction: "right" }),
+  resetDirection: () => set({ direction: INITIAL_DIRECTION }),
 
   speedIncrement: () =>
     set((state: GameLogicStore) => ({

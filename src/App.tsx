@@ -4,7 +4,7 @@ import ColorChanger from "./components/color-changer";
 import ModeToggle from "./components/mode-toggle";
 import useBasic from "./store/basic-store.tsx";
 import useOptions from "./store/gameOptions-store.tsx";
-import useLogic, { Position } from "./store/gameLogic-store.tsx";
+import useLogic, { Position, DIRECTION } from "./store/gameLogic-store.tsx";
 import SNAKE_DANCE_SONG from "./assets/songs/snake-dance.mp3";
 import EATING_FOOD_SONG from "./assets/songs/crunchy-eating.mp3";
 import LIFE_LOST_SONG from "./assets/songs/life-lost.mp3";
@@ -69,13 +69,13 @@ function App() {
   }, []);
 
   const changeDirection = useCallback(
-    (newDirection: string) => {
+    (newDirection: DIRECTION) => {
       if (move) {
         if (
-          (newDirection === "up" && direction !== "down") ||
-          (newDirection === "down" && direction !== "up") ||
-          (newDirection === "left" && direction !== "right") ||
-          (newDirection === "right" && direction !== "left")
+          (newDirection === DIRECTION.UP && direction !== DIRECTION.DOWN) ||
+          (newDirection === DIRECTION.DOWN && direction !== DIRECTION.UP) ||
+          (newDirection === DIRECTION.LEFT && direction !== DIRECTION.RIGHT) ||
+          (newDirection === DIRECTION.RIGHT && direction !== DIRECTION.LEFT)
         ) {
           setDirection(newDirection);
         }
@@ -177,16 +177,20 @@ function App() {
             if (move) setMove(false);
             break;
           case "ArrowUp":
-            if (move && direction !== "down") setDirection("up");
+            if (move && direction !== DIRECTION.DOWN)
+              setDirection(DIRECTION.UP);
             break;
           case "ArrowDown":
-            if (move && direction !== "up") setDirection("down");
+            if (move && direction !== DIRECTION.UP)
+              setDirection(DIRECTION.DOWN);
             break;
           case "ArrowRight":
-            if (move && direction !== "left") setDirection("right");
+            if (move && direction !== DIRECTION.LEFT)
+              setDirection(DIRECTION.RIGHT);
             break;
           case "ArrowLeft":
-            if (move && direction !== "right") setDirection("left");
+            if (move && direction !== DIRECTION.RIGHT)
+              setDirection(DIRECTION.LEFT);
             break;
         }
       }
@@ -202,10 +206,10 @@ function App() {
       intervalRef.current = setInterval(() => {
         setPosition((prevPosition) => {
           let newHead = { ...prevPosition[0] };
-          if (direction === "right") newHead.x += STEP;
-          if (direction === "left") newHead.x -= STEP;
-          if (direction === "down") newHead.y += STEP;
-          if (direction === "up") newHead.y -= STEP;
+          if (direction === DIRECTION.RIGHT) newHead.x += STEP;
+          if (direction === DIRECTION.LEFT) newHead.x -= STEP;
+          if (direction === DIRECTION.DOWN) newHead.y += STEP;
+          if (direction === DIRECTION.UP) newHead.y -= STEP;
           newHead.x = Math.round(newHead.x / STEP) * STEP;
           newHead.y = Math.round(newHead.y / STEP) * STEP;
           if (isCollidingWithBody(newHead)) {
@@ -427,28 +431,28 @@ function App() {
         <div
           id="arrow_up"
           className="bg-zinc-200 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-800 col-start-2 col-end-3 row-start-1 row-end-2 flex justify-center items-center cursor-pointer"
-          onClick={() => changeDirection("up")}
+          onClick={() => changeDirection(DIRECTION.UP)}
         >
           <i className="fa-solid fa-circle-up"></i>
         </div>
         <div
           id="arrow_left"
           className="bg-zinc-200 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-800 col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center items-center cursor-pointer"
-          onClick={() => changeDirection("left")}
+          onClick={() => changeDirection(DIRECTION.LEFT)}
         >
           <i className="fa-solid fa-circle-left"></i>
         </div>
         <div
           id="arrow_right"
           className="bg-zinc-200 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-800 col-start-3 col-end-4 row-start-2 row-end-3 flex justify-center items-center cursor-pointer"
-          onClick={() => changeDirection("right")}
+          onClick={() => changeDirection(DIRECTION.RIGHT)}
         >
           <i className="fa-solid fa-circle-right"></i>
         </div>
         <div
           id="arrow_down"
           className="bg-zinc-200 hover:bg-zinc-400 dark:bg-zinc-600 dark:hover:bg-zinc-800 col-start-2 col-end-3 row-start-3 row-end-4 flex justify-center items-center cursor-pointer"
-          onClick={() => changeDirection("down")}
+          onClick={() => changeDirection(DIRECTION.DOWN)}
         >
           <i className="fa-solid fa-circle-down"></i>
         </div>
