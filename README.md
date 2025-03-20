@@ -13,6 +13,7 @@ A classic Snake game built Fully **Responsive Design** for optimal viewing on al
   was stopped.
 - Each time the snake eats a frog, 10 points will be added to your score. You can see your score in the top center of the screen.
 - You can also see your highest score ever earned in the top right of the screen.
+- During the game, hitting the snake's head against a wall does not defeat you. Rather, the snake's head will enter from the opposite side of the wall it exits from, and this can be repeated each time.
 - In this game, you have 3 lives, which are displayed in the upper left corner, and you lose one of them every time the snake's head collides with its body.
 - After you lose your last life, the game will end and the game will start over from the beginning without refreshing the web page.
 - If you close this web page and return to it later, you

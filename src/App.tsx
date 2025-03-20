@@ -345,7 +345,13 @@ function App() {
               page.
               <br />- If you close this web page and return to it later, you
               will see that your snake color and page theme are the same as the
-              snake color and page theme you last selected.
+              snake color and page theme you last selected. <br />
+              <br />
+              <strong>Important note: </strong> <br />- Don't worry about the
+              snake's head hitting the wall while playing the game, because it
+              won't defeat you. Rather, the snake's head will enter from the
+              opposite side of the wall from which it exits, and this can be
+              repeated every time.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
