@@ -239,7 +239,6 @@ function App() {
                 resetLives();
                 resetDirection();
                 resetFood();
-                setMove(false);
                 sounds.snakeDance.load();
               }, 1000);
             }
